@@ -1,0 +1,956 @@
+{
+  "name": "Creative Asset Handoff Intelligence",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "f8a84344-938f-4984-bcd8-01f9ee549a1c",
+      "name": "Start: Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1200,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2f448975-e930-454c-b590-34d1b31cc48a",
+              "name": "project_path",
+              "value": "/data/examples/messy_project",
+              "type": "string"
+            },
+            {
+              "id": "3fc5a686-3dda-424d-87f1-d5dde9a8f688",
+              "name": "manifest_path",
+              "value": "/data/examples/project_manifest.json",
+              "type": "string"
+            },
+            {
+              "id": "9dfb2666-4344-4285-97d5-7c0dc263e5b0",
+              "name": "output_dir",
+              "value": "/data/output",
+              "type": "string"
+            },
+            {
+              "id": "0e4faf1e-670c-45ba-b67a-aeae466b706f",
+              "name": "project_name",
+              "value": "Maison Living \u2014 Autumn Campaign",
+              "type": "string"
+            },
+            {
+              "id": "c03c7b63-eaa0-47da-beab-b7fd8b1e20c6",
+              "name": "python_bin",
+              "value": "python3",
+              "type": "string"
+            },
+            {
+              "id": "b742367e-c8bf-4755-add1-91539b5e6c3f",
+              "name": "pipeline_script",
+              "value": "/data/python/src/pipeline.py",
+              "type": "string"
+            },
+            {
+              "id": "ce0fa5f9-7af1-4bfe-80f7-9f00ba017e95",
+              "name": "ai_mode",
+              "value": "auto",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "80588803-22cb-4354-8170-9c5155f8495a",
+      "name": "Project Configuration",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -960,
+        300
+      ],
+      "notes": "Edit these five paths to point at your mounted project folder. See n8n/README.md \u2192 Required local paths."
+    },
+    {
+      "parameters": {
+        "command": "={{ $json.python_bin }} {{ $json.pipeline_script }} run-deterministic --project \"{{ $json.project_path }}\" --manifest \"{{ $json.manifest_path }}\" --out \"{{ $json.output_dir }}/pipeline_stages/01_deterministic.json\""
+      },
+      "id": "060f081f-e41e-4225-b223-1560735e60fd",
+      "name": "Run Deterministic Pipeline (Python)",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        -700,
+        300
+      ],
+      "notes": "Discovery + metadata + hashing + perceptual hashing + duplicate detection + version clustering + technical/manifest validation, all in one call. See docs/architecture-decision.md \u00a73 for why this is Python, not n8n Code nodes.",
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "b7424cd0-396a-451a-aa80-af0783404780",
+              "leftValue": "={{ $json.exitCode }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b1f691f2-2e3e-44b8-b7e9-b30a43ede059",
+      "name": "Deterministic Stage Succeeded?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -460,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "return [{ json: {\n  status: \"aborted\", stage: \"run-deterministic\", exit_code: $json.exitCode, stderr: $json.stderr,\n  message: \"The deterministic processing stage failed to run (see stderr). Check that project_path/manifest_path are correct and that Python dependencies (Pillow, imagehash, jsonschema) and ffmpeg are installed in this n8n environment. No source files were modified.\",\n}}];"
+      },
+      "id": "6bc01051-930a-42c2-9f35-32171ba76727",
+      "name": "Build Aborted Run Notice",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -220,
+        460
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "ec5e54e9-801a-4151-96e0-46b9664a9644",
+      "name": "Run Aborted",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        40,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "read",
+        "fileSelector": "={{ $('Project Configuration').item.json.output_dir }}/pipeline_stages/01_deterministic.json",
+        "options": {
+          "dataPropertyName": "data"
+        }
+      },
+      "id": "afa3fd87-03ba-4790-9b49-f8b5b68caf3c",
+      "name": "Read Deterministic Output",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        -220,
+        220
+      ],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const buf = Buffer.from($input.item.binary.data.data, 'base64');\nconst parsed = JSON.parse(buf.toString('utf8'));\nreturn [{ json: parsed }];"
+      },
+      "id": "3e92e076-71bc-46cc-aeae-6fb1b76e49ab",
+      "name": "Parse Deterministic JSON",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        40,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const payload = $json;\nconst byId = {};\nfor (const a of payload.assets) byId[a.id] = a;\nconst clusters = payload.clusters_needing_ai || {};\nconst aiMode = $('Project Configuration').item.json.ai_mode;\nconst items = [];\nfor (const [clusterId, memberIds] of Object.entries(clusters)) {\n  const members = memberIds.map(id => byId[id]).filter(Boolean);\n  items.push({ json: { cluster_id: clusterId, members, project_root: payload.project_root, ai_mode: aiMode } });\n}\nreturn items;"
+      },
+      "id": "f15a27e2-de43-4010-b794-0a5b4965d6d6",
+      "name": "Prepare AI Cluster Batches",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        220
+      ],
+      "notes": "One output item per ambiguous version cluster. Clusters that reduce to a single unique file hash never reach this node -- they're resolved deterministically in the next merge step instead."
+    },
+    {
+      "parameters": {
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "value": "8f3b7a2e-1c4d-4e6a-9b2f-caah5subwf001",
+          "mode": "list",
+          "cachedResultName": "Creative Asset Handoff \u2014 AI Asset Analysis (Sub-workflow)"
+        },
+        "mode": "each",
+        "options": {}
+      },
+      "id": "fcfe4c88-279b-428d-ad31-56dfb79b1911",
+      "name": "AI Asset Analysis \u2014 Per Cluster (Sub-workflow)",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        600,
+        220
+      ],
+      "notes": "Runs once per input item (once per ambiguous cluster) and fans back in. After importing both workflow JSON files, re-select the sub-workflow here from the dropdown -- see n8n/README.md.",
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const det = $('Parse Deterministic JSON').item.json;\nconst byId = {};\nfor (const a of det.assets) byId[a.id] = a;\n\n// Attach AI results for clusters that were sent to the sub-workflow.\nfor (const item of $input.all()) {\n  const result = item.json;\n  if (!result || !result.cluster_id) continue;\n  for (const m of (result.members || [])) {\n    if (byId[m.asset_id]) byId[m.asset_id].ai = result;\n  }\n}\n\n// Trivial clusters (every member shares one file hash) never went to AI --\n// resolve them deterministically here, mirroring python/src/pipeline.py.\nconst clusters = det.version_clusters || {};\nconst needingAi = new Set(Object.keys(det.clusters_needing_ai || {}));\nfor (const [clusterId, memberIds] of Object.entries(clusters)) {\n  if (needingAi.has(clusterId)) continue;\n  const record = {\n    cluster_id: clusterId, relationship: \"likely_duplicate_set\", confidence: 1.0, creative_type: \"unknown\",\n    visual_summary: \"All members are byte-identical (SHA-256 match); no AI opinion needed.\",\n    reason: \"Deterministic: every member of this cluster shares an identical file hash.\",\n    recommended_review: false, ai_mode: \"deterministic\", ai_error: null,\n    members: memberIds.map((id, idx) => ({ asset_id: id, likely_role: idx === 0 ? \"final\" : \"duplicate\", role_confidence: 1.0, differs_visually: false })),\n  };\n  for (const id of memberIds) if (byId[id]) byId[id].ai = record;\n}\n\nreturn [{ json: { ...det, assets: Object.values(byId) } }];"
+      },
+      "id": "613a35b2-48fb-4ea5-90f8-0739b28d923f",
+      "name": "Merge AI Results Onto Asset List",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Deterministic weighted scoring -- the n8n-side port of python/src/classification.py.\n// AI confidence is ONE input, never the decision. Constants below must be kept\n// in sync with python/src/config.py -- see docs/architecture-decision.md \u00a77.\nconst FINAL_RE = /final\\s*final|\\bfinal\\b|\\bFINAL\\b|approved|delivered?|\\blatest\\b/i;\nconst INTERMEDIATE_RE = /\\bdraft\\b|\\bwip\\b|\\bold\\b|\\btemp\\b|\\btest\\b|copy\\s*\\d*$|\\bv0*1\\b/i;\n\nconst W = { FINAL_FILENAME: 0.35, MOST_RECENT: 0.20, MANIFEST_MATCH: 0.15, NOT_DUPLICATE: 0.10,\n            AI_CONF_WEIGHT: 0.20, EXACT_DUP_PENALTY: -0.30, INTERMEDIATE_PENALTY: -0.20 };\nconst THRESH_FINAL = 0.72, THRESH_REVIEW_LOW = 0.40, MARGIN = 0.08;\n\nfunction normalizeForWordMatch(name) { return (name || \"\").replace(/[_\\-.]+/g, \" \"); }\n\nfunction mostRecentInFamily(asset, all) {\n  if (!asset.version_cluster_id) return false;\n  const family = all.filter(a => a.version_cluster_id === asset.version_cluster_id);\n  if (family.length < 2) return false;\n  const newest = family.reduce((a, b) => ((a.modified_at || \"\") > (b.modified_at || \"\") ? a : b));\n  return newest.id === asset.id;\n}\n\nfunction scoreAsset(asset, all) {\n  const reasons = [];\n  let score = 0;\n  const nameNorm = normalizeForWordMatch(asset.filename);\n\n  if (FINAL_RE.test(nameNorm)) { score += W.FINAL_FILENAME; reasons.push(`filename matches a final-like pattern (+${W.FINAL_FILENAME})`); }\n  if (mostRecentInFamily(asset, all)) { score += W.MOST_RECENT; reasons.push(`most recently modified file in its version family (+${W.MOST_RECENT})`); }\n  if (asset.validation && asset.validation.matched_deliverable) { score += W.MANIFEST_MATCH; reasons.push(`matches an expected deliverable in the project manifest (+${W.MANIFEST_MATCH})`); }\n\n  const isExactDup = !!(asset.exact_duplicate_of && asset.exact_duplicate_of.length);\n  if (!isExactDup) { score += W.NOT_DUPLICATE; reasons.push(`not an exact duplicate of another asset (+${W.NOT_DUPLICATE})`); }\n  else { score += W.EXACT_DUP_PENALTY; reasons.push(`is an exact duplicate of another asset (${W.EXACT_DUP_PENALTY})`); }\n\n  if (INTERMEDIATE_RE.test(nameNorm)) { score += W.INTERMEDIATE_PENALTY; reasons.push(`filename matches an intermediate/draft-like pattern (${W.INTERMEDIATE_PENALTY})`); }\n\n  let aiConfidenceUsed = false;\n  const ai = asset.ai;\n  if (ai && (ai.ai_mode === \"live\" || ai.ai_mode === \"mock\")) {\n    const member = (ai.members || []).find(m => m.asset_id === asset.id);\n    if (member && member.likely_role === \"final\") {\n      const contribution = W.AI_CONF_WEIGHT * (member.role_confidence || 0);\n      score += contribution;\n      reasons.push(`AI (${ai.ai_mode}) rates this member as likely-final, confidence ${member.role_confidence} (+${contribution.toFixed(3)})`);\n      aiConfidenceUsed = true;\n    }\n  }\n\n  score = Math.max(0, Math.min(1, score));\n\n  let status;\n  if (asset.in_source_folder || asset.asset_type === \"source_unsupported\") status = \"LIKELY_SOURCE\";\n  else if (asset.inspection_ok === false) status = \"INVALID\";\n  else if (score >= THRESH_FINAL) status = \"LIKELY_FINAL\";\n  else if (score >= THRESH_REVIEW_LOW) status = \"NEEDS_REVIEW\";\n  else if (isExactDup) status = \"DUPLICATE\";\n  else status = \"LIKELY_INTERMEDIATE\";\n\n  const nearBoundary = Math.abs(score - THRESH_FINAL) <= MARGIN || Math.abs(score - THRESH_REVIEW_LOW) <= MARGIN;\n  const unresolvedCluster = !!asset.version_cluster_id && (!ai || ai.ai_mode === \"failed\");\n  const requiresReview = (\n    status === \"NEEDS_REVIEW\" || nearBoundary || unresolvedCluster ||\n    (ai != null && ai.ai_mode === \"failed\") ||\n    (!!(asset.visually_similar_to && asset.visually_similar_to.length) && !aiConfidenceUsed)\n  );\n\n  return { status, score: Math.round(score * 1000) / 1000, requires_review: !!requiresReview, reasons };\n}\n\nconst payload = $json;\nfor (const a of payload.assets) a.classification = scoreAsset(a, payload.assets);\nreturn [{ json: payload }];"
+      },
+      "id": "67b87659-b266-474f-ba61-a7013fb0d8dc",
+      "name": "Classify Assets (Deterministic Scoring)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1140,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "return $json.assets.map(a => ({ json: a }));"
+      },
+      "id": "eacc66d3-e7c7-40ec-8092-70e8202a059b",
+      "name": "Flatten Assets To Items",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1400,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "eec3614f-a92b-4038-9bf8-1554cb57b19c",
+              "leftValue": "={{ $json.classification.requires_review }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c40f538c-c61b-475c-a7c8-b0b44bceaf54",
+      "name": "Requires Human Review?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1660,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const a = $json;\na.final_status = (a.classification.status === \"LIKELY_FINAL\") ? \"approved_auto\" : \"excluded_auto\";\na.review_decision = null;\nreturn { json: a };"
+      },
+      "id": "7e21865d-18ad-4822-91e3-6f9380267346",
+      "name": "Auto-Resolve Confident Asset",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1940,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const items = $input.all().map(i => i.json);\n\nconst rows = items.map(a => {\n  const dupOf = (a.exact_duplicate_of && a.exact_duplicate_of.length) ? a.exact_duplicate_of.join(\", \")\n    : ((a.visual_duplicate_of || []).map(d => d.asset_id).join(\", \"));\n  return `<tr><td><code>${a.id}</code></td><td><strong>${a.filename}</strong><br><span style=\"color:#666;font-size:11px\">${a.relpath}</span></td>` +\n    `<td>${a.classification.status}</td><td>${a.classification.score}</td>` +\n    `<td style=\"font-size:12px\">${(a.classification.reasons || []).join('; ')}</td>` +\n    `<td>${dupOf || '&mdash;'}</td>` +\n    `<td style=\"font-size:12px\">${(a.ai && a.ai.visual_summary) ? a.ai.visual_summary : '&mdash;'}</td></tr>`;\n}).join(\"\");\n\nconst html = `<div style=\"font-family:ui-monospace,monospace;font-size:13px\">\n<table style=\"border-collapse:collapse;width:100%\" border=\"1\" cellpadding=\"6\">\n<tr style=\"background:#eee\"><th>Asset ID</th><th>File</th><th>Status</th><th>Score</th><th>Why flagged</th><th>Duplicate of</th><th>AI summary</th></tr>\n${rows}</table>\n<p>${items.length} asset(s) need a decision. Edit the JSON template below: set \"action\" for each\nasset_id to one of <b>approve | reject | mark_final | mark_duplicate | exclude | rename_category</b>,\nthen paste the edited JSON into the field below and submit.</p></div>`;\n\nconst template = {};\nfor (const a of items) template[a.id] = { action: \"\", note: \"\" };\n\nreturn [{ json: { review_html: html, decisions_template: JSON.stringify(template, null, 2), queue: items } }];"
+      },
+      "id": "9311ebfa-91b3-4531-b614-2f93bc0e28ce",
+      "name": "Aggregate Review Queue",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1940,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "resume": "form",
+        "formTitle": "Creative Asset Handoff \u2014 Human Review",
+        "formDescription": "Review every flagged asset below, then submit your decisions as JSON.",
+        "formFields": {
+          "values": [
+            {
+              "fieldType": "html",
+              "html": "={{ $json.review_html }}"
+            },
+            {
+              "fieldLabel": "Decisions (JSON)",
+              "fieldType": "textarea",
+              "requiredField": true,
+              "placeholder": "={{ $json.decisions_template }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0192c041-bade-4d09-a924-82fd8a5ee554",
+      "name": "Human Review Form",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2220,
+        380
+      ],
+      "notes": "Pauses the running execution (n8n offloads it to the DB) until a human opens the generated form URL and submits. This is n8n's native human-in-the-loop mechanism -- no external server needed. See docs/human-review.md."
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const queue = $('Aggregate Review Queue').item.json.queue;\nlet decisionsRaw = $json['Decisions (JSON)'] || '{}';\nlet decisions = {};\ntry {\n  const parsed = JSON.parse(decisionsRaw);\n  decisions = parsed.decisions || parsed;\n} catch (e) {\n  decisions = {}; // malformed submission -- every item below falls through to pending_review, never silently delivered\n}\n\nconst VALID_ACTIONS = new Set([\"approve\", \"reject\", \"mark_final\", \"mark_duplicate\", \"exclude\", \"rename_category\"]);\n\nreturn queue.map(a => {\n  const d = decisions[a.id];\n  if (d) {\n    const action = VALID_ACTIONS.has(d.action) ? d.action : \"exclude\"; // unrecognized action fails safe to exclude\n    a.review_decision = { action, note: d.note || null, by: \"human\" };\n    if (action === \"approve\" || action === \"mark_final\") {\n      a.final_status = \"approved_reviewed\";\n      if (action === \"mark_final\") a.classification.status = \"LIKELY_FINAL\";\n    } else if (action === \"rename_category\") {\n      a.final_status = \"approved_reviewed\";\n      a.delivery_category_override = d.category || null;\n    } else {\n      a.final_status = \"excluded\";\n      if (action === \"mark_duplicate\") a.classification.status = \"DUPLICATE\";\n    }\n  } else {\n    a.review_decision = null;\n    a.final_status = \"pending_review\"; // no decision submitted -- never auto-delivered\n  }\n  return { json: a };\n});"
+      },
+      "id": "b2aa331e-48bc-4f2e-af77-a02ed979db73",
+      "name": "Parse & Apply Human Decisions",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2500,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "id": "3f2ee216-d647-4b5b-b15c-4584843d5704",
+      "name": "Combine Confident + Reviewed Assets",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        2780,
+        220
+      ],
+      "notes": "Append mode: concatenates the auto-resolved branch and the human-reviewed branch back into one asset stream."
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const det = $('Merge AI Results Onto Asset List').item.json;\nconst assets = $input.all().map(i => i.json);\nconst combined = { ...det, assets };\nreturn [{ json: { content: JSON.stringify(combined, null, 2) } }];"
+      },
+      "id": "452205ee-27d1-4a2a-b83c-7690656ab24f",
+      "name": "Collect Final Asset List",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3040,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "content",
+        "options": {
+          "fileName": "05_reviewed.json",
+          "mimeType": "application/json"
+        }
+      },
+      "id": "dae8f231-e76d-4d42-8d9b-c0b68e7bd7e3",
+      "name": "Convert to JSON File",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        3300,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "={{ $('Project Configuration').item.json.output_dir }}/pipeline_stages/05_reviewed.json",
+        "options": {}
+      },
+      "id": "4b8394e7-45d9-42ab-b18a-9a931bab8d3d",
+      "name": "Write Final Assets JSON",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        3560,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "command": "={{ $('Project Configuration').item.json.python_bin }} {{ $('Project Configuration').item.json.pipeline_script }} deliver --assets \"{{ $('Project Configuration').item.json.output_dir }}/pipeline_stages/05_reviewed.json\" --project \"{{ $('Project Configuration').item.json.project_path }}\" --delivery-dir \"{{ $('Project Configuration').item.json.output_dir }}/delivery\" --out \"{{ $('Project Configuration').item.json.output_dir }}/pipeline_stages/06_delivered.json\""
+      },
+      "id": "772fda09-c4be-4a10-b2ce-cc1c98146b78",
+      "name": "Build Delivery Package (Python)",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        3820,
+        220
+      ],
+      "notes": "Copy-only. Never deletes or moves source files -- see docs/architecture-decision.md \u00a711.",
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "command": "={{ $('Project Configuration').item.json.python_bin }} {{ $('Project Configuration').item.json.pipeline_script }} manifest --assets \"{{ $('Project Configuration').item.json.output_dir }}/pipeline_stages/06_delivered.json\" --project-name \"{{ $('Project Configuration').item.json.project_name }}\" --out-dir \"{{ $('Project Configuration').item.json.output_dir }}\""
+      },
+      "id": "e5586080-5b43-41c5-befe-fa04998d6f8d",
+      "name": "Generate Delivery Manifest (Python)",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        4080,
+        140
+      ],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "command": "={{ $('Project Configuration').item.json.python_bin }} {{ $('Project Configuration').item.json.pipeline_script }} report --assets \"{{ $('Project Configuration').item.json.output_dir }}/pipeline_stages/06_delivered.json\" --project-name \"{{ $('Project Configuration').item.json.project_name }}\" --out-dir \"{{ $('Project Configuration').item.json.output_dir }}\""
+      },
+      "id": "1490bb74-99e2-498a-8fbf-3ad0b186e062",
+      "name": "Generate Processing Report (Python)",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        4080,
+        300
+      ],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const cfg = $('Project Configuration').item.json;\nreturn [{ json: {\n  status: \"complete\",\n  output_dir: cfg.output_dir,\n  delivery_manifest_html: `${cfg.output_dir}/delivery_manifest.html`,\n  delivery_manifest_json: `${cfg.output_dir}/delivery_manifest.json`,\n  processing_report_html: `${cfg.output_dir}/processing_report.html`,\n  delivery_folder: `${cfg.output_dir}/delivery`,\n}}];"
+      },
+      "id": "271eb04b-5ffa-4914-ad1b-3e63bd84bbb0",
+      "name": "Build Completion Summary",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4340,
+        220
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "3c1b3609-a006-49bd-9a18-ca88e74793e3",
+      "name": "\u2705 Run Complete",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        4600,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## \u2460 INPUT\nManual Trigger + Project Configuration. Edit the five\npaths here to point at your mounted project folder,\noptional manifest, and output directory.",
+        "height": 200,
+        "width": 460,
+        "color": 4
+      },
+      "id": "51eca6d7-576f-4ea6-8b65-fd07f928cc74",
+      "name": "Note: ## \u2460 INPUT",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1200,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## \u2461 DISCOVERY, METADATA, HASHING,\n## DUPLICATES & DETERMINISTIC VALIDATION\nOne Python call (Execute Command) does discovery, metadata\nextraction, SHA-256 + perceptual hashing, exact/near-duplicate\ndetection, filename-based version clustering, and technical +\nmanifest validation. Delegated to Python because it needs\nPillow / imagehash / ffprobe -- see docs/architecture-decision.md \u00a73.\nOne bad file never aborts the run (caught inside Python).",
+        "height": 260,
+        "width": 620,
+        "color": 3
+      },
+      "id": "5cc261fe-b322-449d-a6ed-a525bcd62df8",
+      "name": "Note: ## \u2461 DISCOVERY, METADATA, HASHING,",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -700,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## \u2462 IDENTIFY AMBIGUOUS CLUSTERS\nVersion-family clusters that reduce to a single unique file\nhash are resolved deterministically (no AI call). Everything\nelse becomes one item per cluster for the AI step.",
+        "height": 220,
+        "width": 400,
+        "color": 4
+      },
+      "id": "fa2be782-5269-4102-8cf9-1d4144af5c92",
+      "name": "Note: ## \u2462 IDENTIFY AMBIGUOUS CLUSTERS",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        320,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## \u2463 AI ANALYSIS\nOne HTTP call (via the sub-workflow) per ambiguous version\ncluster -- not per file. Plain HTTP Request + hand-rolled JSON\nSchema validation + one retry, not the LangChain Agent node --\nsee docs/architecture-decision.md \u00a74. Trivial duplicate-only\nclusters skip AI entirely -- see docs/deterministic-vs-ai.md.",
+        "height": 240,
+        "width": 500,
+        "color": 6
+      },
+      "id": "bea63989-1c21-4e49-a6a7-0aabb0ed4914",
+      "name": "Note: ## \u2463 AI ANALYSIS",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        600,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## \u2464 CLASSIFICATION (DETERMINISTIC SCORING)\nWeighted scoring engine ported from python/src/classification.py.\nAI confidence is ONE input among several -- never the decision\nby itself. Every asset gets a status + numeric score + reasons.",
+        "height": 200,
+        "width": 500,
+        "color": 3
+      },
+      "id": "e18453e7-3269-4f98-92ff-33f63d36fb9f",
+      "name": "Note: ## \u2464 CLASSIFICATION (DETERMINISTIC SCORI",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1140,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## \u2465 REVIEW SPLIT\nConfident assets skip straight to auto-resolution.\nAnything with requires_review=true (near a threshold, an\nunresolved duplicate/version cluster, or a failed AI call)\ngoes to the Human Review form instead.",
+        "height": 200,
+        "width": 420,
+        "color": 4
+      },
+      "id": "7234c208-504f-4290-bda5-26cc55d1b477",
+      "name": "Note: ## \u2465 REVIEW SPLIT",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1660,
+        620
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## \u2466 HUMAN REVIEW\nn8n's native Wait node (Resume: On Form Submitted) pauses this\nexecution and renders the review queue as a form. No custom\nserver needed. See docs/human-review.md.",
+        "height": 200,
+        "width": 420,
+        "color": 6
+      },
+      "id": "0c06229b-fda5-41ff-bb79-96dfcd642a64",
+      "name": "Note: ## \u2466 HUMAN REVIEW",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2220,
+        620
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## \u2467 DELIVERY BUILDER\nConfident + reviewed assets recombine, get written back to disk,\nthen Python copies approved files into delivery/<category>/.\nCopy-only -- source files are never deleted or moved.",
+        "height": 200,
+        "width": 700,
+        "color": 3
+      },
+      "id": "f6e406dd-5d57-4989-9977-9ca84a66c3a4",
+      "name": "Note: ## \u2467 DELIVERY BUILDER",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2780,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## \u2468 MANIFEST + REPORT\nTwo final Python calls generate delivery_manifest.json/html and\nprocessing_report.html from the same asset ledger, so they can\nalways be cross-checked against each other.",
+        "height": 180,
+        "width": 560,
+        "color": 4
+      },
+      "id": "518e46fb-3924-4bb7-868e-8da355df1e93",
+      "name": "Note: ## \u2468 MANIFEST + REPORT",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        4080,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## \u26a0 ERROR HANDLING PATTERN\nEvery Execute Command node uses Continue On Fail. The guarded\ncheck-then-log pattern shown here on the Discovery step (IF \u2192\nBuild Aborted Run Notice) applies uniformly to the later Python\ncalls too -- omitted there for canvas readability. Per-file\nfailures never reach this level; Python already isolates those\n(see docs/architecture-decision.md \u00a79).",
+        "height": 260,
+        "width": 460,
+        "color": 2
+      },
+      "id": "a3db3ea8-24f5-440c-b275-ccaf870fefbe",
+      "name": "Note: ## \u26a0 ERROR HANDLING PATTERN",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -460,
+        620
+      ]
+    }
+  ],
+  "connections": {
+    "Start: Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Project Configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Project Configuration": {
+      "main": [
+        [
+          {
+            "node": "Run Deterministic Pipeline (Python)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run Deterministic Pipeline (Python)": {
+      "main": [
+        [
+          {
+            "node": "Deterministic Stage Succeeded?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Deterministic Stage Succeeded?": {
+      "main": [
+        [
+          {
+            "node": "Read Deterministic Output",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Build Aborted Run Notice",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Aborted Run Notice": {
+      "main": [
+        [
+          {
+            "node": "Run Aborted",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Deterministic Output": {
+      "main": [
+        [
+          {
+            "node": "Parse Deterministic JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Deterministic JSON": {
+      "main": [
+        [
+          {
+            "node": "Prepare AI Cluster Batches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare AI Cluster Batches": {
+      "main": [
+        [
+          {
+            "node": "AI Asset Analysis \u2014 Per Cluster (Sub-workflow)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Asset Analysis \u2014 Per Cluster (Sub-workflow)": {
+      "main": [
+        [
+          {
+            "node": "Merge AI Results Onto Asset List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge AI Results Onto Asset List": {
+      "main": [
+        [
+          {
+            "node": "Classify Assets (Deterministic Scoring)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Classify Assets (Deterministic Scoring)": {
+      "main": [
+        [
+          {
+            "node": "Flatten Assets To Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Flatten Assets To Items": {
+      "main": [
+        [
+          {
+            "node": "Requires Human Review?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Requires Human Review?": {
+      "main": [
+        [
+          {
+            "node": "Aggregate Review Queue",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Auto-Resolve Confident Asset",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Auto-Resolve Confident Asset": {
+      "main": [
+        [
+          {
+            "node": "Combine Confident + Reviewed Assets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate Review Queue": {
+      "main": [
+        [
+          {
+            "node": "Human Review Form",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Human Review Form": {
+      "main": [
+        [
+          {
+            "node": "Parse & Apply Human Decisions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse & Apply Human Decisions": {
+      "main": [
+        [
+          {
+            "node": "Combine Confident + Reviewed Assets",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Combine Confident + Reviewed Assets": {
+      "main": [
+        [
+          {
+            "node": "Collect Final Asset List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Collect Final Asset List": {
+      "main": [
+        [
+          {
+            "node": "Convert to JSON File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to JSON File": {
+      "main": [
+        [
+          {
+            "node": "Write Final Assets JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write Final Assets JSON": {
+      "main": [
+        [
+          {
+            "node": "Build Delivery Package (Python)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Delivery Package (Python)": {
+      "main": [
+        [
+          {
+            "node": "Generate Delivery Manifest (Python)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Generate Processing Report (Python)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Delivery Manifest (Python)": {
+      "main": [
+        [
+          {
+            "node": "Build Completion Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Processing Report (Python)": {
+      "main": [
+        [
+          {
+            "node": "Build Completion Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Completion Summary": {
+      "main": [
+        [
+          {
+            "node": "\u2705 Run Complete",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "id": "8f3b7a2e-1c4d-4e6a-9b2f-caah5mainwf00",
+  "tags": []
+}

@@ -1,0 +1,23 @@
+flowchart TB
+    INPUT["Messy Project Folder\n+ optional project_manifest.json"]
+
+    subgraph N8N["n8n (orchestrator)"]
+        direction TB
+        DET["Deterministic Processing\n(Execute Command → Python)\ndiscovery · metadata · hashing\nduplicates · version clusters · validation"]
+        AI["AI Analysis\n(HTTP Request → Claude Sonnet, vision)\none call per ambiguous cluster only"]
+        CLASS["Deterministic Classification\n(Code node, weighted scoring)"]
+        REVIEW["Human Review\n(Wait node — Resume: On Form Submitted)"]
+        DELIVER["Delivery Builder\n(Execute Command → Python, copy-only)"]
+        REPORT["Manifest + Report\n(Execute Command → Python)"]
+
+        DET --> AI --> CLASS --> REVIEW --> DELIVER --> REPORT
+    end
+
+    OUTPUT["delivery/ + delivery_manifest.(json|html)\n+ processing_report.html"]
+
+    INPUT --> N8N
+    N8N --> OUTPUT
+
+    style N8N fill:#F1F1EC,stroke:#12171C,stroke-width:2px
+    style INPUT fill:#FBFBF8,stroke:#767F73
+    style OUTPUT fill:#DCEEE4,stroke:#1C7F5C

@@ -1,0 +1,11 @@
+{
+  "project": "Maison Living \u2014 Autumn Campaign",
+  "expected_deliverables": [
+    { "type": "instagram_post", "format": "png", "dimensions": "1080x1080" },
+    { "type": "instagram_reel", "format": "mp4", "dimensions": "1080x1920" },
+    { "type": "brand_logo", "format": "svg", "dimensions": "512x512" },
+    { "type": "lookbook_cover", "format": "jpg", "dimensions": "3000x2000" },
+    { "type": "web_hero_banner", "format": "jpg", "dimensions": "1920x1080" },
+    { "type": "campaign_onepager", "format": "pdf", "dimensions": "" }
+  ]
+}

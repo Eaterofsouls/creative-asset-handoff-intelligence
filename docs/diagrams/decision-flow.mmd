@@ -1,0 +1,26 @@
+flowchart TB
+    ASSET["Asset enters\nclassification"] --> SCORE["Deterministic weighted score\n(filename + recency + manifest\n+ duplicate signals + AI confidence)"]
+
+    SCORE --> Q1{"Exact duplicate\nof another asset?"}
+    Q1 -- yes --> DUP["DUPLICATE"] --> REVIEWQ
+    Q1 -- no --> Q2{"Score ≥ 0.72\nand not near a\nthreshold boundary?"}
+
+    Q2 -- yes --> VALID["LIKELY_FINAL"]
+    Q2 -- no --> Q3{"Score in\n0.40–0.72?"}
+    Q3 -- yes --> UNCERTAIN["NEEDS_REVIEW"] --> REVIEWQ
+    Q3 -- no --> INTER["LIKELY_INTERMEDIATE\n/ LIKELY_SOURCE"]
+
+    VALID --> Q4{"Unresolved version\ncluster or failed\nAI analysis?"}
+    Q4 -- yes --> REVIEWQ["HUMAN REVIEW\n(n8n Form)"]
+    Q4 -- no --> DELIVERY["CLEAN DELIVERY\nPACKAGE"]
+
+    INTER --> DELIVERY
+    REVIEWQ --> DECISION{"Human decision"}
+    DECISION -- approved --> DELIVERY
+    DECISION -- "not approved" --> EXCLUDED["Excluded from delivery\n(or staged in REVIEW_REQUIRED/)"]
+    style VALID fill:#DCEEE4,stroke:#1C7F5C
+    style DELIVERY fill:#DCEEE4,stroke:#1C7F5C
+    style UNCERTAIN fill:#F6E7CB,stroke:#B9791A
+    style REVIEWQ fill:#F6E7CB,stroke:#B9791A
+    style DUP fill:#F5DAD4,stroke:#B23A2E
+    style EXCLUDED fill:#F5DAD4,stroke:#B23A2E

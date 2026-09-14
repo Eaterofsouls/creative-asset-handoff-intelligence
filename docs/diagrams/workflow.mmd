@@ -1,0 +1,27 @@
+flowchart TB
+    T["① Manual Trigger\n+ Project Configuration"] --> DC["② Run Deterministic\nPipeline (Python)"]
+    DC --> OK{"Deterministic\nstage OK?"}
+    OK -- no --> ABORT["Build Aborted Run\nNotice → Run Aborted"]
+    OK -- yes --> PARSE["Parse Deterministic JSON"]
+    PARSE --> PREP["③ Prepare AI\nCluster Batches"]
+    PREP --> SUBWF["④ AI Asset Analysis\n(Sub-workflow, per cluster)"]
+    SUBWF --> MERGE["Merge AI Results\nOnto Asset List"]
+    MERGE --> SCORE["⑤ Classify Assets\n(Deterministic Scoring)"]
+    SCORE --> FLAT["Flatten Assets To Items"]
+    FLAT --> RSPLIT{"⑥ Requires\nHuman Review?"}
+    RSPLIT -- no --> AUTO["Auto-Resolve\nConfident Asset"]
+    RSPLIT -- yes --> AGG["⑦ Aggregate\nReview Queue"]
+    AGG --> FORM["Human Review Form\n(Wait: On Form Submitted)"]
+    FORM --> APPLY["Parse & Apply\nHuman Decisions"]
+    AUTO --> COMBINE["⑧ Combine Confident\n+ Reviewed Assets"]
+    APPLY --> COMBINE
+    COMBINE --> WRITE["Write Final Assets JSON"]
+    WRITE --> DELIVER["Build Delivery\nPackage (Python)"]
+    DELIVER --> MANIFEST["⑨ Generate Delivery\nManifest (Python)"]
+    DELIVER --> REPORT["Generate Processing\nReport (Python)"]
+    MANIFEST --> DONE["✅ Run Complete"]
+    REPORT --> DONE
+
+    style ABORT fill:#F5DAD4,stroke:#B23A2E
+    style DONE fill:#DCEEE4,stroke:#1C7F5C
+    style FORM fill:#F6E7CB,stroke:#B9791A

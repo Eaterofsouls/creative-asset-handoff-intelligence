@@ -1,0 +1,1127 @@
+{
+  "project_root": "/home/claude/build/creative-asset-handoff-intelligence/examples/messy_project",
+  "assets": [
+    {
+      "filename": "broken_thumbnail.jpg",
+      "relpath": "broken_thumbnail.jpg",
+      "extension": "jpg",
+      "asset_type": "image",
+      "mime": "image/jpeg",
+      "size_bytes": 32,
+      "width": null,
+      "height": null,
+      "duration_seconds": null,
+      "codec": null,
+      "container": null,
+      "sha256": "8dec4fbf8e0471b0361c017b0b1e55a5662dca9edb31af305cb8a50957e52d4d",
+      "perceptual_hash": null,
+      "modified_at": "2026-08-17T11:10:20.541440+00:00",
+      "in_source_folder": false,
+      "inspection_ok": false,
+      "inspection_error": "OSError: Truncated File Read",
+      "id": "a-605a5e941eba",
+      "exact_duplicate_of": [],
+      "visual_duplicate_of": [],
+      "visually_similar_to": [],
+      "possible_duplicate_of": [],
+      "version_cluster_id": null,
+      "validation": {
+        "valid": false,
+        "issues": [
+          "inspection failed: OSError: Truncated File Read"
+        ],
+        "matched_deliverable": null
+      }
+    },
+    {
+      "filename": "campaign_onepager_final.pdf",
+      "relpath": "campaign_onepager_final.pdf",
+      "extension": "pdf",
+      "asset_type": "document",
+      "mime": "application/pdf",
+      "size_bytes": 67168,
+      "width": 1700,
+      "height": 2200,
+      "duration_seconds": null,
+      "codec": null,
+      "container": null,
+      "sha256": "8b3b67a445f5b8a60e4a4287871cf2d82cb5b092c845d2594622aa72ea39d8f7",
+      "perceptual_hash": null,
+      "modified_at": "2026-08-17T11:10:45.191397+00:00",
+      "in_source_folder": false,
+      "inspection_ok": true,
+      "inspection_error": null,
+      "id": "a-855226779e15",
+      "exact_duplicate_of": [],
+      "visual_duplicate_of": [],
+      "visually_similar_to": [],
+      "possible_duplicate_of": [],
+      "version_cluster_id": null,
+      "validation": {
+        "valid": true,
+        "issues": [],
+        "matched_deliverable": "campaign_onepager"
+      }
+    },
+    {
+      "filename": "corrupted_export.png",
+      "relpath": "corrupted_export.png",
+      "extension": "png",
+      "asset_type": "image",
+      "mime": "image/png",
+      "size_bytes": 0,
+      "width": null,
+      "height": null,
+      "duration_seconds": null,
+      "codec": null,
+      "container": null,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "perceptual_hash": null,
+      "modified_at": "2026-08-17T11:10:20.535397+00:00",
+      "in_source_folder": false,
+      "inspection_ok": false,
+      "inspection_error": "UnidentifiedImageError: cannot identify image file '/home/claude/build/creative-asset-handoff-intelligence/examples/messy_project/corrupted_export.png'",
+      "id": "a-15ed4bea7315",
+      "exact_duplicate_of": [],
+      "visual_duplicate_of": [],
+      "visually_similar_to": [],
+      "possible_duplicate_of": [],
+      "version_cluster_id": null,
+      "validation": {
+        "valid": false,
+        "issues": [
+          "inspection failed: UnidentifiedImageError: cannot identify image file '/home/claude/build/creative-asset-handoff-intelligence/examples/messy_project/corrupted_export.png'",
+          "file is zero bytes"
+        ],
+        "matched_deliverable": null
+      }
+    },
+    {
+      "filename": "final.png",
+      "relpath": "final.png",
+      "extension": "png",
+      "asset_type": "image",
+      "mime": "image/png",
+      "size_bytes": 10372,
+      "width": 1080,
+      "height": 1080,
+      "duration_seconds": null,
+      "codec": null,
+      "container": null,
+      "sha256": "47eeb785d08ca064fac84483aa06431455c3007b9509abd789a02fc70af88e03",
+      "perceptual_hash": "97443146ec9b4e9b649b8ff04974cb744bf4346b97691368f4b796b53493e800",
+      "modified_at": "2026-08-17T11:12:29.579397+00:00",
+      "in_source_folder": false,
+      "inspection_ok": true,
+      "inspection_error": null,
+      "id": "a-7e0a726c55d7",
+      "exact_duplicate_of": [],
+      "visual_duplicate_of": [
+        {
+          "asset_id": "a-670b4a6c1d6e",
+          "distance": 6
+        },
+        {
+          "asset_id": "a-939245a829c8",
+          "distance": 6
+        },
+        {
+          "asset_id": "a-aeb613a6874d",
+          "distance": 2
+        }
+      ],
+      "visually_similar_to": [
+        {
+          "asset_id": "a-4604b24ba270",
+          "distance": 24
+        },
+        {
+          "asset_id": "a-e2c79942cda4",
+          "distance": 24
+        },
+        {
+          "asset_id": "a-4195a7cf61a9",
+          "distance": 24
+        },
+        {
+          "asset_id": "a-1726e1297a97",
+          "distance": 28
+        }
+      ],
+      "possible_duplicate_of": [],
+      "version_cluster_id": "cluster_002_final",
+      "validation": {
+        "valid": true,
+        "issues": [],
+        "matched_deliverable": "instagram_post"
+      }
+    },
+    {
+      "filename": "final_FINAL.png",
+      "relpath": "final_FINAL.png",
+      "extension": "png",
+      "asset_type": "image",
+      "mime": "image/png",
+      "size_bytes": 10455,
+      "width": 1080,
+      "height": 1080,
+      "duration_seconds": null,
+      "codec": null,
+      "container": null,
+      "sha256": "52fcc918e2d8cef94e78858b2b84222fe09b684af447d27927f48a60eff33d41",
+      "perceptual_hash": "97443146ec9b4e9b649b8fe04974c9744bf4346b97691368f4b596b534b3ea02",
+      "modified_at": "2026-08-17T11:12:29.655397+00:00",
+      "in_source_folder": false,
+      "inspection_ok": true,
+      "inspection_error": null,
+      "id": "a-670b4a6c1d6e",
+      "exact_duplicate_of": [
+        "a-939245a829c8"
+      ],
+      "visual_duplicate_of": [
+        {
+          "asset_id": "a-7e0a726c55d7",
+          "distance": 6
+        },
+        {
+          "asset_id": "a-aeb613a6874d",
+          "distance": 8
+        }
+      ],
+      "visually_similar_to": [
+        {
+          "asset_id": "a-4604b24ba270",
+          "distance": 24
+        },
+        {
+          "asset_id": "a-e2c79942cda4",
+          "distance": 24
+        },
+        {
+          "asset_id": "a-4195a7cf61a9",
+          "distance": 26
+        }
+      ],
+      "possible_duplicate_of": [],
+      "version_cluster_id": "cluster_002_final",
+      "validation": {
+        "valid": true,
+        "issues": [],
+        "matched_deliverable": "instagram_post"
+      }
+    },
+    {
+      "filename": "final_final_revised.png",
+      "relpath": "final_final_revised.png",
+      "extension": "png",
+      "asset_type": "image",
+      "mime": "image/png",
+      "size_bytes": 10455,
+      "width": 1080,
+      "height": 1080,
+      "duration_seconds": null,
+      "codec": null,
+      "container": null,
+      "sha256": "52fcc918e2d8cef94e78858b2b84222fe09b684af447d27927f48a60eff33d41",
+      "perceptual_hash": "97443146ec9b4e9b649b8fe04974c9744bf4346b97691368f4b596b534b3ea02",
+      "modified_at": "2026-08-17T11:12:29.687397+00:00",
+      "in_source_folder": false,
+      "inspection_ok": true,
+      "inspection_error": null,
+      "id": "a-939245a829c8",
+      "exact_duplicate_of": [
+        "a-670b4a6c1d6e"
+      ],
+      "visual_duplicate_of": [
+        {
+          "asset_id": "a-7e0a726c55d7",
+          "distance": 6
+        },
+        {
+          "asset_id": "a-aeb613a6874d",
+          "distance": 8
+        }
+      ],
+      "visually_similar_to": [
+        {
+          "asset_id": "a-4604b24ba270",
+          "distance": 24
+        },
+        {
+          "asset_id": "a-e2c79942cda4",
+          "distance": 24
+        },
+        {
+          "asset_id": "a-4195a7cf61a9",
+          "distance": 26
+        }
+      ],
+      "possible_duplicate_of": [],
+      "version_cluster_id": "cluster_002_final",
+      "validation": {
+        "valid": true,
+        "issues": [],
+        "matched_deliverable": "instagram_post"
+      }
+    },
+    {
+      "filename": "final_v2.png",
+      "relpath": "final_v2.png",
+      "extension": "png",
+      "asset_type": "image",
+      "mime": "image/png",
+      "size_bytes": 10393,
+      "width": 1080,
+      "height": 1080,
+      "duration_seconds": null,
+      "codec": null,
+      "container": null,
+      "sha256": "300c30333b5c6dd77923480c4c41d09b773bb6edbd394f5f808c101810caada5",
+      "perceptual_hash": "97443146ec9b4e99649b8ff04b74cb744bf4346b97691368f4b796b53493e800",
+      "modified_at": "2026-08-17T11:12:29.619397+00:00",
+      "in_source_folder": false,
+      "inspection_ok": true,
+      "inspection_error": null,
+      "id": "a-aeb613a6874d",
+      "exact_duplicate_of": [],
+      "visual_duplicate_of": [
+        {
+          "asset_id": "a-7e0a726c55d7",
+          "distance": 2
+        },
+        {
+          "asset_id": "a-670b4a6c1d6e",
+          "distance": 8
+        },
+        {
+          "asset_id": "a-939245a829c8",
+          "distance": 8
+        }
+      ],
+      "visually_similar_to": [
+        {
+          "asset_id": "a-4604b24ba270",
+          "distance": 24
+        },
+        {
+          "asset_id": "a-e2c79942cda4",
+          "distance": 24
+        },
+        {
+          "asset_id": "a-4195a7cf61a9",
+          "distance": 24
+        },
+        {
+          "asset_id": "a-1726e1297a97",
+          "distance": 28
+        }
+      ],
+      "possible_duplicate_of": [],
+      "version_cluster_id": "cluster_002_final",
+      "validation": {
+        "valid": true,
+        "issues": [],
+        "matched_deliverable": "instagram_post"
+      }
+    },
+    {
+      "filename": "hero_banner_final.jpg",
+      "relpath": "hero_banner_final.jpg",
+      "extension": "jpg",
+      "asset_type": "image",
+      "mime": "image/jpeg",
+      "size_bytes": 3904,
+      "width": 320,
+      "height": 320,
+      "duration_seconds": null,
+      "codec": null,
+      "container": null,
+      "sha256": "9f046a6d3b467fa8b5d4055ce5374d326bc36861df7f60cf00ca7d45ec1456ce",
+      "perceptual_hash": "b54c354ce8936cb344bb8b744b74cb744b7416eb966b176b44b4b4b53497e802",
+      "modified_at": "2026-08-17T11:10:19.925283+00:00",
+      "in_source_folder": false,
+      "inspection_ok": true,
+      "inspection_error": null,
+      "id": "a-61b75d665bd7",
+      "exact_duplicate_of": [],
+      "visual_duplicate_of": [],
+      "visually_similar_to": [
+        {
+          "asset_id": "a-4604b24ba270",
+          "distance": 26
+        },
+        {
+          "asset_id": "a-e2c79942cda4",
+          "distance": 26
+        },
+        {
+          "asset_id": "a-4195a7cf61a9",
+          "distance": 28
+        },
+        {
+          "asset_id": "a-1726e1297a97",
+          "distance": 26
+        }
+      ],
+      "possible_duplicate_of": [],
+      "version_cluster_id": null,
+      "validation": {
+        "valid": false,
+        "issues": [
+          "format matches expected deliverable 'lookbook_cover' but dimensions 320x320 != expected 3000x2000"
+        ],
+        "matched_deliverable": null
+      }
+    },
+    {
+      "filename": "instagram_post_1080.png",
+      "relpath": "instagram_post_1080.png",
+      "extension": "png",
+      "asset_type": "image",
+      "mime": "image/png",
+      "size_bytes": 8902,
+      "width": 1080,
+      "height": 1080,
+      "duration_seconds": null,
+      "codec": null,
+      "container": null,
+      "sha256": "8c7a8f15192214cb55e245bf102ab147535f02c8e1ee5745b33fcb6209a15111",
+      "perceptual_hash": "b5443546ec9b6c9b649b8b744b74cb744b7416e99769136816b596b514b3f806",
+      "modified_at": "2026-08-17T11:10:19.815397+00:00",
+      "in_source_folder": false,
+      "inspection_ok": true,
+      "inspection_error": null,
+      "id": "a-4604b24ba270",
+      "exact_duplicate_of": [
+        "a-e2c79942cda4"
+      ],
+      "visual_duplicate_of": [
+        {
+          "asset_id": "a-4195a7cf61a9",
+          "distance": 4
+        }
+      ],
+      "visually_similar_to": [
+        {
+          "asset_id": "a-7e0a726c55d7",
+          "distance": 24
+        },
+        {
+          "asset_id": "a-670b4a6c1d6e",
+          "distance": 24
+        },
+        {
+          "asset_id": "a-939245a829c8",
+          "distance": 24
+        },
+        {
+          "asset_id": "a-aeb613a6874d",
+          "distance": 24
+        },
+        {
+          "asset_id": "a-61b75d665bd7",
+          "distance": 26
+        },
+        {
+          "asset_id": "a-e88745276856",
+          "distance": 16
+        },
+        {
+          "asset_id": "a-1726e1297a97",
+          "distance": 18
+        },
+        {
+          "asset_id": "a-01904bfd5d28",
+          "distance": 26
+        }
+      ],
+      "possible_duplicate_of": [],
+      "version_cluster_id": null,
+      "validation": {
+        "valid": true,
+        "issues": [],
+        "matched_deliverable": "instagram_post"
+      }
+    },
+    {
+      "filename": "logo.svg",
+      "relpath": "logo.svg",
+      "extension": "svg",
+      "asset_type": "image",
+      "mime": "image/svg+xml",
+      "size_bytes": 354,
+      "width": 512,
+      "height": 512,
+      "duration_seconds": null,
+      "codec": null,
+      "container": null,
+      "sha256": "cff28a73d6e47759680d83d9a1de295143b4ebbe075ce7c5d98e0ec8df8295b8",
+      "perceptual_hash": null,
+      "modified_at": "2026-08-17T11:10:19.923133+00:00",
+      "in_source_folder": false,
+      "inspection_ok": true,
+      "inspection_error": null,
+      "id": "a-145770c269c5",
+      "exact_duplicate_of": [
+        "a-397a771ddc57"
+      ],
+      "visual_duplicate_of": [],
+      "visually_similar_to": [],
+      "possible_duplicate_of": [],
+      "version_cluster_id": "cluster_005_logo",
+      "validation": {
+        "valid": true,
+        "issues": [],
+        "matched_deliverable": "brand_logo"
+      }
+    },
+    {
+      "filename": "logo_latest_final.svg",
+      "relpath": "logo_latest_final.svg",
+      "extension": "svg",
+      "asset_type": "image",
+      "mime": "image/svg+xml",
+      "size_bytes": 355,
+      "width": 512,
+      "height": 512,
+      "duration_seconds": null,
+      "codec": null,
+      "container": null,
+      "sha256": "8827e6f32650e9858c0533759041f4459aec242e294dbf3733bdcb161ccf0de1",
+      "perceptual_hash": null,
+      "modified_at": "2026-08-17T11:10:19.923217+00:00",
+      "in_source_folder": false,
+      "inspection_ok": true,
+      "inspection_error": null,
+      "id": "a-e4c1b434ac4e",
+      "exact_duplicate_of": [],
+      "visual_duplicate_of": [],
+      "visually_similar_to": [],
+      "possible_duplicate_of": [],
+      "version_cluster_id": "cluster_005_logo",
+      "validation": {
+        "valid": true,
+        "issues": [],
+        "matched_deliverable": "brand_logo"
+      }
+    },
+    {
+      "filename": "logo_new.svg",
+      "relpath": "logo_new.svg",
+      "extension": "svg",
+      "asset_type": "image",
+      "mime": "image/svg+xml",
+      "size_bytes": 354,
+      "width": 512,
+      "height": 512,
+      "duration_seconds": null,
+      "codec": null,
+      "container": null,
+      "sha256": "cff28a73d6e47759680d83d9a1de295143b4ebbe075ce7c5d98e0ec8df8295b8",
+      "perceptual_hash": null,
+      "modified_at": "2026-08-17T11:10:19.923185+00:00",
+      "in_source_folder": false,
+      "inspection_ok": true,
+      "inspection_error": null,
+      "id": "a-397a771ddc57",
+      "exact_duplicate_of": [
+        "a-145770c269c5"
+      ],
+      "visual_duplicate_of": [],
+      "visually_similar_to": [],
+      "possible_duplicate_of": [],
+      "version_cluster_id": "cluster_005_logo",
+      "validation": {
+        "valid": true,
+        "issues": [],
+        "matched_deliverable": "brand_logo"
+      }
+    },
+    {
+      "filename": "lookbook_cover_final.jpg",
+      "relpath": "lookbook_cover_final.jpg",
+      "extension": "jpg",
+      "asset_type": "image",
+      "mime": "image/jpeg",
+      "size_bytes": 128426,
+      "width": 3000,
+      "height": 2000,
+      "duration_seconds": null,
+      "codec": null,
+      "container": null,
+      "sha256": "1edab05443d709d9a02c40c2a884b5d952b21cdb4e8b1ed0e243347a146737a4",
+      "perceptual_hash": "b5443544e8916c99649ba9764974cb744b76166b976b136a96b596b714b3f806",
+      "modified_at": "2026-08-17T11:10:20.055397+00:00",
+      "in_source_folder": false,
+      "inspection_ok": true,
+      "inspection_error": null,
+      "id": "a-e88745276856",
+      "exact_duplicate_of": [],
+      "visual_duplicate_of": [],
+      "visually_similar_to": [
+        {
+          "asset_id": "a-4604b24ba270",
+          "distance": 16
+        },
+        {
+          "asset_id": "a-e2c79942cda4",
+          "distance": 16
+        },
+        {
+          "asset_id": "a-4195a7cf61a9",
+          "distance": 18
+        },
+        {
+          "asset_id": "a-1726e1297a97",
+          "distance": 18
+        }
+      ],
+      "possible_duplicate_of": [],
+      "version_cluster_id": null,
+      "validation": {
+        "valid": true,
+        "issues": [],
+        "matched_deliverable": "lookbook_cover"
+      }
+    },
+    {
+      "filename": "post_1080_final.png",
+      "relpath": "post_1080_final.png",
+      "extension": "png",
+      "asset_type": "image",
+      "mime": "image/png",
+      "size_bytes": 8902,
+      "width": 1080,
+      "height": 1080,
+      "duration_seconds": null,
+      "codec": null,
+      "container": null,
+      "sha256": "8c7a8f15192214cb55e245bf102ab147535f02c8e1ee5745b33fcb6209a15111",
+      "perceptual_hash": "b5443546ec9b6c9b649b8b744b74cb744b7416e99769136816b596b514b3f806",
+      "modified_at": "2026-08-17T11:10:19.847397+00:00",
+      "in_source_folder": false,
+      "inspection_ok": true,
+      "inspection_error": null,
+      "id": "a-e2c79942cda4",
+      "exact_duplicate_of": [
+        "a-4604b24ba270"
+      ],
+      "visual_duplicate_of": [
+        {
+          "asset_id": "a-4195a7cf61a9",
+          "distance": 4
+        }
+      ],
+      "visually_similar_to": [
+        {
+          "asset_id": "a-7e0a726c55d7",
+          "distance": 24
+        },
+        {
+          "asset_id": "a-670b4a6c1d6e",
+          "distance": 24
+        },
+        {
+          "asset_id": "a-939245a829c8",
+          "distance": 24
+        },
+        {
+          "asset_id": "a-aeb613a6874d",
+          "distance": 24
+        },
+        {
+          "asset_id": "a-61b75d665bd7",
+          "distance": 26
+        },
+        {
+          "asset_id": "a-e88745276856",
+          "distance": 16
+        },
+        {
+          "asset_id": "a-1726e1297a97",
+          "distance": 18
+        },
+        {
+          "asset_id": "a-01904bfd5d28",
+          "distance": 26
+        }
+      ],
+      "possible_duplicate_of": [],
+      "version_cluster_id": "cluster_007_post_1080",
+      "validation": {
+        "valid": true,
+        "issues": [],
+        "matched_deliverable": "instagram_post"
+      }
+    },
+    {
+      "filename": "post_1080_v2.png",
+      "relpath": "post_1080_v2.png",
+      "extension": "png",
+      "asset_type": "image",
+      "mime": "image/png",
+      "size_bytes": 8906,
+      "width": 1080,
+      "height": 1080,
+      "duration_seconds": null,
+      "codec": null,
+      "container": null,
+      "sha256": "86143631112f99621830beb14fa26ab4db04d1f286482c46eed5370a5aa304cb",
+      "perceptual_hash": "b5443546ec9b6c9b649b8b744b74cb744b7416e99769136816b596b714b3e805",
+      "modified_at": "2026-08-17T11:10:19.883397+00:00",
+      "in_source_folder": false,
+      "inspection_ok": true,
+      "inspection_error": null,
+      "id": "a-4195a7cf61a9",
+      "exact_duplicate_of": [],
+      "visual_duplicate_of": [
+        {
+          "asset_id": "a-4604b24ba270",
+          "distance": 4
+        },
+        {
+          "asset_id": "a-e2c79942cda4",
+          "distance": 4
+        }
+      ],
+      "visually_similar_to": [
+        {
+          "asset_id": "a-7e0a726c55d7",
+          "distance": 24
+        },
+        {
+          "asset_id": "a-670b4a6c1d6e",
+          "distance": 26
+        },
+        {
+          "asset_id": "a-939245a829c8",
+          "distance": 26
+        },
+        {
+          "asset_id": "a-aeb613a6874d",
+          "distance": 24
+        },
+        {
+          "asset_id": "a-61b75d665bd7",
+          "distance": 28
+        },
+        {
+          "asset_id": "a-e88745276856",
+          "distance": 18
+        },
+        {
+          "asset_id": "a-1726e1297a97",
+          "distance": 16
+        },
+        {
+          "asset_id": "a-01904bfd5d28",
+          "distance": 26
+        }
+      ],
+      "possible_duplicate_of": [],
+      "version_cluster_id": "cluster_007_post_1080",
+      "validation": {
+        "valid": true,
+        "issues": [],
+        "matched_deliverable": "instagram_post"
+      }
+    },
+    {
+      "filename": "promo_square_wrong_size.png",
+      "relpath": "promo_square_wrong_size.png",
+      "extension": "png",
+      "asset_type": "image",
+      "mime": "image/png",
+      "size_bytes": 5528,
+      "width": 800,
+      "height": 800,
+      "duration_seconds": null,
+      "codec": null,
+      "container": null,
+      "sha256": "14f6e0485dcaa28783e33c8226a301b9d54dfb1f0f516d1805f4b3dde5590453",
+      "perceptual_hash": "b5443544ec996c9b649b89644b74cb744b7614eb976b136b16b794b734b3e900",
+      "modified_at": "2026-08-17T11:10:19.919397+00:00",
+      "in_source_folder": false,
+      "inspection_ok": true,
+      "inspection_error": null,
+      "id": "a-1726e1297a97",
+      "exact_duplicate_of": [],
+      "visual_duplicate_of": [],
+      "visually_similar_to": [
+        {
+          "asset_id": "a-7e0a726c55d7",
+          "distance": 28
+        },
+        {
+          "asset_id": "a-aeb613a6874d",
+          "distance": 28
+        },
+        {
+          "asset_id": "a-61b75d665bd7",
+          "distance": 26
+        },
+        {
+          "asset_id": "a-4604b24ba270",
+          "distance": 18
+        },
+        {
+          "asset_id": "a-e88745276856",
+          "distance": 18
+        },
+        {
+          "asset_id": "a-e2c79942cda4",
+          "distance": 18
+        },
+        {
+          "asset_id": "a-4195a7cf61a9",
+          "distance": 16
+        }
+      ],
+      "possible_duplicate_of": [],
+      "version_cluster_id": null,
+      "validation": {
+        "valid": true,
+        "issues": [],
+        "matched_deliverable": "instagram_post"
+      }
+    },
+    {
+      "filename": "random_export.jpg",
+      "relpath": "random_export.jpg",
+      "extension": "jpg",
+      "asset_type": "image",
+      "mime": "image/jpeg",
+      "size_bytes": 271266,
+      "width": 1200,
+      "height": 800,
+      "duration_seconds": null,
+      "codec": null,
+      "container": null,
+      "sha256": "a7dbabcc3a0a0aad328ca12a15f1a2574e445b131c70ebd01ca24cd904e2fa7b",
+      "perceptual_hash": "8a045dfc7f1655fc6f067a5444be5c74c4fefd540001bff30041ffff00015555",
+      "modified_at": "2026-08-17T11:10:20.535397+00:00",
+      "in_source_folder": false,
+      "inspection_ok": true,
+      "inspection_error": null,
+      "id": "a-4b9c4f5f9b30",
+      "exact_duplicate_of": [],
+      "visual_duplicate_of": [],
+      "visually_similar_to": [],
+      "possible_duplicate_of": [],
+      "version_cluster_id": null,
+      "validation": {
+        "valid": true,
+        "issues": [],
+        "matched_deliverable": "lookbook_cover"
+      }
+    },
+    {
+      "filename": "reel_final.mp4",
+      "relpath": "reel_final.mp4",
+      "extension": "mp4",
+      "asset_type": "video",
+      "mime": "video/mp4",
+      "size_bytes": 2974491,
+      "width": 1080,
+      "height": 1920,
+      "duration_seconds": 4.0,
+      "codec": "h264",
+      "container": "mov,mp4,m4a,3gp,3g2,mj2",
+      "sha256": "af8f82dbe9bdb1749bfe90bdfe8c908df23fbf6e29cd784d95cd8aba7be653c7",
+      "perceptual_hash": null,
+      "modified_at": "2026-08-17T11:10:41.926570+00:00",
+      "in_source_folder": false,
+      "inspection_ok": true,
+      "inspection_error": null,
+      "id": "a-c0b6e110d796",
+      "exact_duplicate_of": [
+        "a-fef4b0c58df4"
+      ],
+      "visual_duplicate_of": [],
+      "visually_similar_to": [],
+      "possible_duplicate_of": [],
+      "version_cluster_id": "cluster_010_reel",
+      "validation": {
+        "valid": true,
+        "issues": [],
+        "matched_deliverable": "instagram_reel"
+      },
+      "ai": {
+        "cluster_id": "cluster_010_reel",
+        "relationship": "likely_duplicate_set",
+        "confidence": 1.0,
+        "creative_type": "unknown",
+        "visual_summary": "All members are byte-identical (SHA-256 match); no AI opinion needed.",
+        "reason": "Deterministic: every member of this cluster shares an identical file hash.",
+        "recommended_review": false,
+        "ai_mode": "deterministic",
+        "ai_error": null,
+        "members": [
+          {
+            "asset_id": "a-c0b6e110d796",
+            "likely_role": "final",
+            "role_confidence": 1.0,
+            "differs_visually": false
+          },
+          {
+            "asset_id": "a-fef4b0c58df4",
+            "likely_role": "duplicate",
+            "role_confidence": 1.0,
+            "differs_visually": false
+          }
+        ]
+      }
+    },
+    {
+      "filename": "reel_final_2.mp4",
+      "relpath": "reel_final_2.mp4",
+      "extension": "mp4",
+      "asset_type": "video",
+      "mime": "video/mp4",
+      "size_bytes": 2974491,
+      "width": 1080,
+      "height": 1920,
+      "duration_seconds": 4.0,
+      "codec": "h264",
+      "container": "mov,mp4,m4a,3gp,3g2,mj2",
+      "sha256": "af8f82dbe9bdb1749bfe90bdfe8c908df23fbf6e29cd784d95cd8aba7be653c7",
+      "perceptual_hash": null,
+      "modified_at": "2026-08-17T11:10:41.939397+00:00",
+      "in_source_folder": false,
+      "inspection_ok": true,
+      "inspection_error": null,
+      "id": "a-fef4b0c58df4",
+      "exact_duplicate_of": [
+        "a-c0b6e110d796"
+      ],
+      "visual_duplicate_of": [],
+      "visually_similar_to": [],
+      "possible_duplicate_of": [],
+      "version_cluster_id": "cluster_010_reel",
+      "validation": {
+        "valid": true,
+        "issues": [],
+        "matched_deliverable": "instagram_reel"
+      },
+      "ai": {
+        "cluster_id": "cluster_010_reel",
+        "relationship": "likely_duplicate_set",
+        "confidence": 1.0,
+        "creative_type": "unknown",
+        "visual_summary": "All members are byte-identical (SHA-256 match); no AI opinion needed.",
+        "reason": "Deterministic: every member of this cluster shares an identical file hash.",
+        "recommended_review": false,
+        "ai_mode": "deterministic",
+        "ai_error": null,
+        "members": [
+          {
+            "asset_id": "a-c0b6e110d796",
+            "likely_role": "final",
+            "role_confidence": 1.0,
+            "differs_visually": false
+          },
+          {
+            "asset_id": "a-fef4b0c58df4",
+            "likely_role": "duplicate",
+            "role_confidence": 1.0,
+            "differs_visually": false
+          }
+        ]
+      }
+    },
+    {
+      "filename": "reel_v1_draft.mp4",
+      "relpath": "reel_v1_draft.mp4",
+      "extension": "mp4",
+      "asset_type": "video",
+      "mime": "video/mp4",
+      "size_bytes": 1387861,
+      "width": 720,
+      "height": 1280,
+      "duration_seconds": 4.0,
+      "codec": "h264",
+      "container": "mov,mp4,m4a,3gp,3g2,mj2",
+      "sha256": "fe75ce4d60871744c6e0ae44baf040f9d9dfb40b57324198f4d085a88487ac87",
+      "perceptual_hash": null,
+      "modified_at": "2026-08-17T11:10:45.061465+00:00",
+      "in_source_folder": false,
+      "inspection_ok": true,
+      "inspection_error": null,
+      "id": "a-93e8ec96d805",
+      "exact_duplicate_of": [],
+      "visual_duplicate_of": [],
+      "visually_similar_to": [],
+      "possible_duplicate_of": [],
+      "version_cluster_id": null,
+      "validation": {
+        "valid": true,
+        "issues": [],
+        "matched_deliverable": "instagram_reel"
+      }
+    },
+    {
+      "filename": "campaign_master.psd",
+      "relpath": "source/campaign_master.psd",
+      "extension": "psd",
+      "asset_type": "source_unsupported",
+      "mime": "image/vnd.adobe.photoshop",
+      "size_bytes": 2052,
+      "width": null,
+      "height": null,
+      "duration_seconds": null,
+      "codec": null,
+      "container": null,
+      "sha256": "c78bebbd4a71149f3f9e3b34f5dea1d77079777ac502a9242ed729464b6a04c6",
+      "perceptual_hash": null,
+      "modified_at": "2026-08-17T11:10:20.541622+00:00",
+      "in_source_folder": true,
+      "inspection_ok": true,
+      "inspection_error": "proprietary_format_metadata_limited",
+      "id": "a-762d99c3a9c6",
+      "exact_duplicate_of": [],
+      "visual_duplicate_of": [],
+      "visually_similar_to": [],
+      "possible_duplicate_of": [],
+      "version_cluster_id": null,
+      "validation": {
+        "valid": true,
+        "issues": [],
+        "matched_deliverable": null
+      }
+    },
+    {
+      "filename": "final_layered_export_v1.tif",
+      "relpath": "source/final_layered_export_v1.tif",
+      "extension": "tif",
+      "asset_type": "image",
+      "mime": "image/tiff",
+      "size_bytes": 65594,
+      "width": 1600,
+      "height": 1067,
+      "duration_seconds": null,
+      "codec": null,
+      "container": null,
+      "sha256": "cf36a08f5a3f509a488a31590015987061b967a00e6aec3f84d291fbab904811",
+      "perceptual_hash": "b5463546e8936c9bc6b983f44b74cb744b7416e997691149b497b4973493f803",
+      "modified_at": "2026-08-17T11:10:56.171397+00:00",
+      "in_source_folder": true,
+      "inspection_ok": true,
+      "inspection_error": null,
+      "id": "a-01904bfd5d28",
+      "exact_duplicate_of": [],
+      "visual_duplicate_of": [],
+      "visually_similar_to": [
+        {
+          "asset_id": "a-4604b24ba270",
+          "distance": 26
+        },
+        {
+          "asset_id": "a-e2c79942cda4",
+          "distance": 26
+        },
+        {
+          "asset_id": "a-4195a7cf61a9",
+          "distance": 26
+        }
+      ],
+      "possible_duplicate_of": [],
+      "version_cluster_id": null,
+      "validation": {
+        "valid": true,
+        "issues": [],
+        "matched_deliverable": null
+      }
+    },
+    {
+      "filename": "logo_lockup.ai",
+      "relpath": "source/logo_lockup.ai",
+      "extension": "ai",
+      "asset_type": "source_unsupported",
+      "mime": "application/postscript",
+      "size_bytes": 1047,
+      "width": null,
+      "height": null,
+      "duration_seconds": null,
+      "codec": null,
+      "container": null,
+      "sha256": "52a262ddce4c23aff87df9b53f6d8bd51404cfcb8c2ff3228d458722b836f5c2",
+      "perceptual_hash": null,
+      "modified_at": "2026-08-17T11:10:20.541788+00:00",
+      "in_source_folder": true,
+      "inspection_ok": true,
+      "inspection_error": "proprietary_format_metadata_limited",
+      "id": "a-24427021fddb",
+      "exact_duplicate_of": [],
+      "visual_duplicate_of": [],
+      "visually_similar_to": [],
+      "possible_duplicate_of": [],
+      "version_cluster_id": null,
+      "validation": {
+        "valid": true,
+        "issues": [],
+        "matched_deliverable": null
+      }
+    }
+  ],
+  "version_clusters": {
+    "cluster_002_final": [
+      "a-7e0a726c55d7",
+      "a-670b4a6c1d6e",
+      "a-939245a829c8",
+      "a-aeb613a6874d"
+    ],
+    "cluster_005_logo": [
+      "a-145770c269c5",
+      "a-e4c1b434ac4e",
+      "a-397a771ddc57"
+    ],
+    "cluster_007_post_1080": [
+      "a-e2c79942cda4",
+      "a-4195a7cf61a9"
+    ],
+    "cluster_010_reel": [
+      "a-c0b6e110d796",
+      "a-fef4b0c58df4"
+    ]
+  },
+  "clusters_needing_ai": {
+    "cluster_002_final": [
+      "a-7e0a726c55d7",
+      "a-670b4a6c1d6e",
+      "a-939245a829c8",
+      "a-aeb613a6874d"
+    ],
+    "cluster_005_logo": [
+      "a-145770c269c5",
+      "a-e4c1b434ac4e",
+      "a-397a771ddc57"
+    ],
+    "cluster_007_post_1080": [
+      "a-e2c79942cda4",
+      "a-4195a7cf61a9"
+    ]
+  },
+  "manifest_compare": {
+    "manifest_supplied": true,
+    "missing_deliverables": [
+      {
+        "type": "web_hero_banner",
+        "format": "jpg",
+        "dimensions": "1920x1080"
+      }
+    ],
+    "matched_count": 17
+  },
+  "errors": [
+    {
+      "stage": "metadata_extraction",
+      "asset": "broken_thumbnail.jpg",
+      "message": "OSError: Truncated File Read"
+    },
+    {
+      "stage": "metadata_extraction",
+      "asset": "corrupted_export.png",
+      "message": "UnidentifiedImageError: cannot identify image file '/home/claude/build/creative-asset-handoff-intelligence/examples/messy_project/corrupted_export.png'"
+    }
+  ]
+}

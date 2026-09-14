@@ -1,0 +1,16 @@
+# Creative Asset Handoff Intelligence — Python component
+#
+# System dependency (not pip-installable): ffmpeg/ffprobe must be on PATH
+# for video metadata extraction. apt install ffmpeg / brew install ffmpeg.
+#
+# Install with:
+#   pip install -r requirements.txt --break-system-packages
+# (drop --break-system-packages if installing inside a virtualenv)
+
+Pillow>=10.0.0        # image decoding, dimension extraction, safe verify
+imagehash>=4.3.1       # perceptual hashing for near-duplicate detection
+pypdf>=4.0.0            # PDF page count / dimensions for document deliverables
+jsonschema>=4.20.0      # strict schema validation of AI responses
+
+# Testing
+pytest>=8.0.0

@@ -1,0 +1,46 @@
+{
+  "project_name": "Maison Living \u2014 Autumn Campaign",
+  "total": 23,
+  "supported": 23,
+  "unsupported": 0,
+  "exact_dupes": 8,
+  "visual_dupes": 7,
+  "version_clusters": 4,
+  "validation_failures": 3,
+  "inspection_failed": 2,
+  "ai_analyzed": 11,
+  "ai_live": 0,
+  "ai_mock": 9,
+  "ai_failed": 0,
+  "human_decisions": 13,
+  "pending_review": 0,
+  "final_delivered": 6,
+  "by_status": {
+    "INVALID": 2,
+    "NEEDS_REVIEW": 4,
+    "LIKELY_FINAL": 5,
+    "DUPLICATE": 6,
+    "LIKELY_INTERMEDIATE": 3,
+    "LIKELY_SOURCE": 3
+  },
+  "manifest_supplied": true,
+  "missing_deliverables": [
+    {
+      "type": "web_hero_banner",
+      "format": "jpg",
+      "dimensions": "1920x1080"
+    }
+  ],
+  "errors": [
+    {
+      "stage": "metadata_extraction",
+      "asset": "broken_thumbnail.jpg",
+      "message": "OSError: Truncated File Read"
+    },
+    {
+      "stage": "metadata_extraction",
+      "asset": "corrupted_export.png",
+      "message": "UnidentifiedImageError: cannot identify image file '/home/claude/build/creative-asset-handoff-intelligence/examples/messy_project/corrupted_export.png'"
+    }
+  ]
+}

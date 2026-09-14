@@ -1,0 +1,18 @@
+{
+  "_comment": "Stand-in for the n8n Form Trigger submission described in docs/architecture-decision.md \u00a710. Keys are asset ids from the review queue produced by `pipeline.py review-queue` against examples/messy_project + examples/project_manifest.json.",
+  "decisions": {
+    "a-7e0a726c55d7": { "action": "reject",        "note": "Superseded draft of the Autumn post creative." },
+    "a-aeb613a6874d": { "action": "reject",        "note": "Superseded revision; final_FINAL.png is the approved version." },
+    "a-670b4a6c1d6e": { "action": "mark_final",    "note": "Confirmed as the approved Autumn Collection post." },
+    "a-939245a829c8": { "action": "mark_duplicate","note": "Byte-identical to final_FINAL.png, just renamed." },
+    "a-61b75d665bd7": { "action": "exclude",       "note": "Wrong dimensions for the web hero banner spec; needs re-export." },
+    "a-4604b24ba270": { "action": "mark_duplicate","note": "Byte-identical to post_1080_final.png." },
+    "a-e2c79942cda4": { "action": "approve",       "note": "Canonical 1080x1080 Instagram post export." },
+    "a-4195a7cf61a9": { "action": "reject",        "note": "Earlier revision, superseded by post_1080_final.png." },
+    "a-e88745276856": { "action": "approve",       "note": "Lookbook cover confirmed correct at 3000x2000." },
+    "a-855226779e15": { "action": "approve",       "note": "One-pager approved for client handoff." },
+    "a-1726e1297a97": { "action": "exclude",       "note": "800x800, wrong size for the promo square spec; needs re-export." },
+    "a-fef4b0c58df4": { "action": "mark_final",    "note": "This is the delivered reel; reel_final.mp4 is an exact duplicate and will auto-exclude." },
+    "a-01904bfd5d28": { "action": "exclude",       "note": "Layered source export stays internal, not part of client delivery." }
+  }
+}

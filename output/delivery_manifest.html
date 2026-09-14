@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Delivery Manifest — Maison Living — Autumn Campaign</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F1F1EC; --panel:#FBFBF8; --ink:#12171C; --ink-soft:#4B5560;
+  --line:#C9CCC3; --ok:#1C7F5C; --ok-bg:#DCEEE4; --warn:#B9791A; --warn-bg:#F6E7CB;
+  --bad:#B23A2E; --bad-bg:#F5DAD4; --muted:#767F73; --muted-bg:#E4E4DC;
+  --accent:#C77A2E; --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);
+  line-height:1.5; background-image:
+    linear-gradient(var(--paper) 39px, rgba(0,0,0,0.035) 40px);
+  background-size: 100% 40px;}
+.wrap{max-width:1080px;margin:0 auto;padding:48px 32px 96px}
+header.masthead{display:flex;justify-content:space-between;align-items:flex-start;
+  border-bottom:3px solid var(--ink);padding-bottom:20px;margin-bottom:8px;gap:24px;flex-wrap:wrap}
+.eyebrow{font-family:var(--mono);text-transform:uppercase;letter-spacing:.14em;
+  font-size:12px;color:var(--ink-soft)}
+h1{font-family:var(--display);font-weight:700;font-size:34px;letter-spacing:-.01em;margin:6px 0 4px}
+.sub{color:var(--ink-soft);font-size:15px;max-width:56ch}
+.meta{font-family:var(--mono);font-size:12px;color:var(--ink-soft);text-align:right}
+.stamp{border:3px double var(--ink);border-radius:3px;padding:10px 18px;transform:rotate(-3deg);
+  font-family:var(--display);font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+  font-size:13px;white-space:nowrap;background:var(--panel)}
+.stamp.ok{color:var(--ok);border-color:var(--ok)}
+.stamp.warn{color:var(--warn);border-color:var(--warn)}
+.stamp.bad{color:var(--bad);border-color:var(--bad)}
+.stats{display:flex;flex-wrap:wrap;gap:1px;
+  background:var(--line);border:1px solid var(--line);margin:28px 0 36px}
+.stat{background:var(--panel);padding:16px 18px;flex:1 1 140px;min-width:140px}
+.stat .n{font-family:var(--mono);font-size:26px;font-weight:600;display:block}
+.stat .l{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft)}
+section{margin:40px 0}
+h2{font-family:var(--display);font-size:19px;letter-spacing:-.005em;
+  border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:16px;
+  display:flex;align-items:baseline;gap:10px}
+h2 .idx{font-family:var(--mono);color:var(--accent);font-size:14px}
+table{width:100%;border-collapse:collapse;background:var(--panel);font-size:13.5px}
+th{text-align:left;font-family:var(--mono);text-transform:uppercase;font-size:10.5px;
+  letter-spacing:.06em;color:var(--ink-soft);border-bottom:2px solid var(--ink);
+  padding:8px 10px;background:var(--panel)}
+td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:hover td{background:#00000006}
+.mono{font-family:var(--mono);font-size:12.5px}
+.badge{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:600;
+  text-transform:uppercase;letter-spacing:.05em;padding:2px 8px;border-radius:2px;border:1px solid}
+.badge.ok{color:var(--ok);background:var(--ok-bg);border-color:var(--ok)}
+.badge.warn{color:var(--warn);background:var(--warn-bg);border-color:var(--warn)}
+.badge.bad{color:var(--bad);background:var(--bad-bg);border-color:var(--bad)}
+.badge.muted{color:var(--muted);background:var(--muted-bg);border-color:var(--muted)}
+.reasons{font-size:12px;color:var(--ink-soft)}
+.reasons li{margin:2px 0}
+.callout{border-left:3px solid var(--accent);background:var(--panel);padding:12px 16px;
+  font-size:13.5px;color:var(--ink-soft)}
+.footer-note{margin-top:56px;padding-top:16px;border-top:1px solid var(--line);
+  font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
+.tick-rule{height:14px;background-image:repeating-linear-gradient(90deg,var(--ink) 0 1px,transparent 1px 12px);
+  opacity:.35;margin:4px 0 28px}
+.empty{color:var(--ink-soft);font-style:italic;font-size:13px;padding:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <div>
+    <div class="eyebrow">Delivery Manifest</div>
+    <h1>Maison Living — Autumn Campaign</h1>
+    <div class="sub">6 asset(s) across 3 categories: Brand_Assets, Images, Social</div>
+  </div>
+  <div class="stamp warn">READY WITH WARNINGS</div>
+</header>
+<div class="tick-rule"></div>
+
+<section>
+  <h2><span class="idx">01</span> Assets</h2>
+  <table><thead><tr><th>#</th><th>File</th><th>Deliverable</th><th>Dimensions / Duration</th><th>Category</th><th>Status</th></tr></thead>
+  <tbody><tr>
+      <td class="mono">01</td>
+      <td><strong>campaign_onepager_final.pdf</strong><div class="mono" style="color:var(--ink-soft);font-size:11px">8b3b67a445f5b8a6&hellip;</div></td>
+      <td>campaign_onepager</td>
+      <td class="mono">1700x2200</td>
+      <td>Images</td>
+      <td><span class="badge muted">REVIEWED / APPROVED</span></td>
+    </tr><tr>
+      <td class="mono">02</td>
+      <td><strong>final_FINAL.png</strong><div class="mono" style="color:var(--ink-soft);font-size:11px">52fcc918e2d8cef9&hellip;</div></td>
+      <td>instagram_post</td>
+      <td class="mono">1080x1080</td>
+      <td>Social</td>
+      <td><span class="badge muted">REVIEWED / APPROVED</span></td>
+    </tr><tr>
+      <td class="mono">03</td>
+      <td><strong>logo_latest_final.svg</strong><div class="mono" style="color:var(--ink-soft);font-size:11px">8827e6f32650e985&hellip;</div></td>
+      <td>brand_logo</td>
+      <td class="mono">512x512</td>
+      <td>Brand_Assets</td>
+      <td><span class="badge muted">APPROVED (AUTOMATIC)</span></td>
+    </tr><tr>
+      <td class="mono">04</td>
+      <td><strong>lookbook_cover_final.jpg</strong><div class="mono" style="color:var(--ink-soft);font-size:11px">1edab05443d709d9&hellip;</div></td>
+      <td>lookbook_cover</td>
+      <td class="mono">3000x2000</td>
+      <td>Images</td>
+      <td><span class="badge muted">REVIEWED / APPROVED</span></td>
+    </tr><tr>
+      <td class="mono">05</td>
+      <td><strong>post_1080_final.png</strong><div class="mono" style="color:var(--ink-soft);font-size:11px">8c7a8f15192214cb&hellip;</div></td>
+      <td>instagram_post</td>
+      <td class="mono">1080x1080</td>
+      <td>Social</td>
+      <td><span class="badge muted">REVIEWED / APPROVED</span></td>
+    </tr><tr>
+      <td class="mono">06</td>
+      <td><strong>reel_final_2.mp4</strong><div class="mono" style="color:var(--ink-soft);font-size:11px">af8f82dbe9bdb174&hellip;</div></td>
+      <td>instagram_reel</td>
+      <td class="mono">1080x1920</td>
+      <td>Social</td>
+      <td><span class="badge muted">REVIEWED / APPROVED</span></td>
+    </tr></tbody></table>
+</section>
+
+<section>
+      <h2><span class="idx">//</span> Missing Deliverables</h2>
+      <ul class="reasons"><li><strong>web_hero_banner</strong> &mdash; expected jpg, 1920x1080</li></ul>
+    </section>
+
+<section>
+  <h2><span class="idx">02</span> Warnings</h2>
+  <ul class="reasons"><li>1 expected deliverable(s) from the project manifest were not found among the delivered assets.</li><li>13 asset(s) required a manual human review decision before delivery.</li></ul>
+</section>
+
+<div class="footer-note">Generated by Creative Asset Handoff Intelligence &middot; 2026-08-19 05:13 UTC
+&middot; This report is decision support, not an autonomous delivery action. A human retains final approval authority.</div>
+</div>
+</body>
+</html>

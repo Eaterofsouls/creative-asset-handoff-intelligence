@@ -1,0 +1,108 @@
+{
+  "project": "Maison Living \u2014 Autumn Campaign",
+  "delivery_status": "READY WITH WARNINGS",
+  "generated_at": "2026-08-19T05:13:25.716543+00:00",
+  "asset_count": 6,
+  "categories": [
+    "Brand_Assets",
+    "Images",
+    "Social"
+  ],
+  "warnings": [
+    "1 expected deliverable(s) from the project manifest were not found among the delivered assets.",
+    "13 asset(s) required a manual human review decision before delivery."
+  ],
+  "assets": [
+    {
+      "index": 1,
+      "id": "a-855226779e15",
+      "filename": "campaign_onepager_final.pdf",
+      "delivery_category": "Images",
+      "type": "document",
+      "deliverable_type": "campaign_onepager",
+      "dimensions": "1700x2200",
+      "duration_seconds": null,
+      "size_bytes": 67168,
+      "status": "REVIEWED / APPROVED",
+      "classification": "NEEDS_REVIEW",
+      "sha256": "8b3b67a445f5b8a60e4a4287871cf2d82cb5b092c845d2594622aa72ea39d8f7"
+    },
+    {
+      "index": 2,
+      "id": "a-670b4a6c1d6e",
+      "filename": "final_FINAL.png",
+      "delivery_category": "Social",
+      "type": "image",
+      "deliverable_type": "instagram_post",
+      "dimensions": "1080x1080",
+      "duration_seconds": null,
+      "size_bytes": 10455,
+      "status": "REVIEWED / APPROVED",
+      "classification": "LIKELY_FINAL",
+      "sha256": "52fcc918e2d8cef94e78858b2b84222fe09b684af447d27927f48a60eff33d41"
+    },
+    {
+      "index": 3,
+      "id": "a-e4c1b434ac4e",
+      "filename": "logo_latest_final.svg",
+      "delivery_category": "Brand_Assets",
+      "type": "image",
+      "deliverable_type": "brand_logo",
+      "dimensions": "512x512",
+      "duration_seconds": null,
+      "size_bytes": 355,
+      "status": "APPROVED (AUTOMATIC)",
+      "classification": "LIKELY_FINAL",
+      "sha256": "8827e6f32650e9858c0533759041f4459aec242e294dbf3733bdcb161ccf0de1"
+    },
+    {
+      "index": 4,
+      "id": "a-e88745276856",
+      "filename": "lookbook_cover_final.jpg",
+      "delivery_category": "Images",
+      "type": "image",
+      "deliverable_type": "lookbook_cover",
+      "dimensions": "3000x2000",
+      "duration_seconds": null,
+      "size_bytes": 128426,
+      "status": "REVIEWED / APPROVED",
+      "classification": "NEEDS_REVIEW",
+      "sha256": "1edab05443d709d9a02c40c2a884b5d952b21cdb4e8b1ed0e243347a146737a4"
+    },
+    {
+      "index": 5,
+      "id": "a-e2c79942cda4",
+      "filename": "post_1080_final.png",
+      "delivery_category": "Social",
+      "type": "image",
+      "deliverable_type": "instagram_post",
+      "dimensions": "1080x1080",
+      "duration_seconds": null,
+      "size_bytes": 8902,
+      "status": "REVIEWED / APPROVED",
+      "classification": "DUPLICATE",
+      "sha256": "8c7a8f15192214cb55e245bf102ab147535f02c8e1ee5745b33fcb6209a15111"
+    },
+    {
+      "index": 6,
+      "id": "a-fef4b0c58df4",
+      "filename": "reel_final_2.mp4",
+      "delivery_category": "Social",
+      "type": "video",
+      "deliverable_type": "instagram_reel",
+      "dimensions": "1080x1920",
+      "duration_seconds": 4.0,
+      "size_bytes": 2974491,
+      "status": "REVIEWED / APPROVED",
+      "classification": "LIKELY_FINAL",
+      "sha256": "af8f82dbe9bdb1749bfe90bdfe8c908df23fbf6e29cd784d95cd8aba7be653c7"
+    }
+  ],
+  "missing_deliverables": [
+    {
+      "type": "web_hero_banner",
+      "format": "jpg",
+      "dimensions": "1920x1080"
+    }
+  ]
+}

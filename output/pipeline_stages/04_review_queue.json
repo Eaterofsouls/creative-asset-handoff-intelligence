@@ -1,0 +1,234 @@
+{
+  "review_queue": [
+    {
+      "asset_id": "a-855226779e15",
+      "filename": "campaign_onepager_final.pdf",
+      "relpath": "campaign_onepager_final.pdf",
+      "status": "NEEDS_REVIEW",
+      "score": 0.6,
+      "reasons": [
+        "filename matches a final-like pattern (+0.35)",
+        "matches an expected deliverable in the project manifest (+0.15)",
+        "not an exact duplicate of another asset (+0.1)"
+      ],
+      "duplicate_of": [],
+      "version_cluster_id": null,
+      "ai_summary": null,
+      "ai_mode": null
+    },
+    {
+      "asset_id": "a-7e0a726c55d7",
+      "filename": "final.png",
+      "relpath": "final.png",
+      "status": "LIKELY_FINAL",
+      "score": 0.736,
+      "reasons": [
+        "filename matches a final-like pattern (+0.35)",
+        "matches an expected deliverable in the project manifest (+0.15)",
+        "not an exact duplicate of another asset (+0.1)",
+        "AI (mock) rates this member as likely-final, confidence 0.68 (+0.136)"
+      ],
+      "duplicate_of": [
+        "a-670b4a6c1d6e",
+        "a-939245a829c8",
+        "a-aeb613a6874d"
+      ],
+      "version_cluster_id": "cluster_002_final",
+      "ai_summary": "Mock analysis (no ANTHROPIC_API_KEY set): filenames and metadata suggest related exports of the same creative; visual content was not inspected in mock mode.",
+      "ai_mode": "mock"
+    },
+    {
+      "asset_id": "a-670b4a6c1d6e",
+      "filename": "final_FINAL.png",
+      "relpath": "final_FINAL.png",
+      "status": "DUPLICATE",
+      "score": 0.2,
+      "reasons": [
+        "filename matches a final-like pattern (+0.35)",
+        "matches an expected deliverable in the project manifest (+0.15)",
+        "is an exact duplicate of another asset (-0.3)"
+      ],
+      "duplicate_of": [
+        "a-939245a829c8"
+      ],
+      "version_cluster_id": "cluster_002_final",
+      "ai_summary": "Mock analysis (no ANTHROPIC_API_KEY set): filenames and metadata suggest related exports of the same creative; visual content was not inspected in mock mode.",
+      "ai_mode": "mock"
+    },
+    {
+      "asset_id": "a-939245a829c8",
+      "filename": "final_final_revised.png",
+      "relpath": "final_final_revised.png",
+      "status": "NEEDS_REVIEW",
+      "score": 0.4,
+      "reasons": [
+        "filename matches a final-like pattern (+0.35)",
+        "most recently modified file in its version family (+0.2)",
+        "matches an expected deliverable in the project manifest (+0.15)",
+        "is an exact duplicate of another asset (-0.3)"
+      ],
+      "duplicate_of": [
+        "a-670b4a6c1d6e"
+      ],
+      "version_cluster_id": "cluster_002_final",
+      "ai_summary": "Mock analysis (no ANTHROPIC_API_KEY set): filenames and metadata suggest related exports of the same creative; visual content was not inspected in mock mode.",
+      "ai_mode": "mock"
+    },
+    {
+      "asset_id": "a-aeb613a6874d",
+      "filename": "final_v2.png",
+      "relpath": "final_v2.png",
+      "status": "LIKELY_FINAL",
+      "score": 0.736,
+      "reasons": [
+        "filename matches a final-like pattern (+0.35)",
+        "matches an expected deliverable in the project manifest (+0.15)",
+        "not an exact duplicate of another asset (+0.1)",
+        "AI (mock) rates this member as likely-final, confidence 0.68 (+0.136)"
+      ],
+      "duplicate_of": [
+        "a-7e0a726c55d7",
+        "a-670b4a6c1d6e",
+        "a-939245a829c8"
+      ],
+      "version_cluster_id": "cluster_002_final",
+      "ai_summary": "Mock analysis (no ANTHROPIC_API_KEY set): filenames and metadata suggest related exports of the same creative; visual content was not inspected in mock mode.",
+      "ai_mode": "mock"
+    },
+    {
+      "asset_id": "a-61b75d665bd7",
+      "filename": "hero_banner_final.jpg",
+      "relpath": "hero_banner_final.jpg",
+      "status": "NEEDS_REVIEW",
+      "score": 0.45,
+      "reasons": [
+        "filename matches a final-like pattern (+0.35)",
+        "not an exact duplicate of another asset (+0.1)"
+      ],
+      "duplicate_of": [],
+      "version_cluster_id": null,
+      "ai_summary": null,
+      "ai_mode": null
+    },
+    {
+      "asset_id": "a-4604b24ba270",
+      "filename": "instagram_post_1080.png",
+      "relpath": "instagram_post_1080.png",
+      "status": "DUPLICATE",
+      "score": 0.0,
+      "reasons": [
+        "matches an expected deliverable in the project manifest (+0.15)",
+        "is an exact duplicate of another asset (-0.3)"
+      ],
+      "duplicate_of": [
+        "a-e2c79942cda4"
+      ],
+      "version_cluster_id": null,
+      "ai_summary": null,
+      "ai_mode": null
+    },
+    {
+      "asset_id": "a-e88745276856",
+      "filename": "lookbook_cover_final.jpg",
+      "relpath": "lookbook_cover_final.jpg",
+      "status": "NEEDS_REVIEW",
+      "score": 0.6,
+      "reasons": [
+        "filename matches a final-like pattern (+0.35)",
+        "matches an expected deliverable in the project manifest (+0.15)",
+        "not an exact duplicate of another asset (+0.1)"
+      ],
+      "duplicate_of": [],
+      "version_cluster_id": null,
+      "ai_summary": null,
+      "ai_mode": null
+    },
+    {
+      "asset_id": "a-e2c79942cda4",
+      "filename": "post_1080_final.png",
+      "relpath": "post_1080_final.png",
+      "status": "DUPLICATE",
+      "score": 0.2,
+      "reasons": [
+        "filename matches a final-like pattern (+0.35)",
+        "matches an expected deliverable in the project manifest (+0.15)",
+        "is an exact duplicate of another asset (-0.3)"
+      ],
+      "duplicate_of": [
+        "a-4604b24ba270"
+      ],
+      "version_cluster_id": "cluster_007_post_1080",
+      "ai_summary": "Mock analysis (no ANTHROPIC_API_KEY set): filenames and metadata suggest related exports of the same creative; visual content was not inspected in mock mode.",
+      "ai_mode": "mock"
+    },
+    {
+      "asset_id": "a-4195a7cf61a9",
+      "filename": "post_1080_v2.png",
+      "relpath": "post_1080_v2.png",
+      "status": "NEEDS_REVIEW",
+      "score": 0.45,
+      "reasons": [
+        "most recently modified file in its version family (+0.2)",
+        "matches an expected deliverable in the project manifest (+0.15)",
+        "not an exact duplicate of another asset (+0.1)"
+      ],
+      "duplicate_of": [
+        "a-4604b24ba270",
+        "a-e2c79942cda4"
+      ],
+      "version_cluster_id": "cluster_007_post_1080",
+      "ai_summary": "Mock analysis (no ANTHROPIC_API_KEY set): filenames and metadata suggest related exports of the same creative; visual content was not inspected in mock mode.",
+      "ai_mode": "mock"
+    },
+    {
+      "asset_id": "a-1726e1297a97",
+      "filename": "promo_square_wrong_size.png",
+      "relpath": "promo_square_wrong_size.png",
+      "status": "LIKELY_INTERMEDIATE",
+      "score": 0.25,
+      "reasons": [
+        "matches an expected deliverable in the project manifest (+0.15)",
+        "not an exact duplicate of another asset (+0.1)"
+      ],
+      "duplicate_of": [],
+      "version_cluster_id": null,
+      "ai_summary": null,
+      "ai_mode": null
+    },
+    {
+      "asset_id": "a-fef4b0c58df4",
+      "filename": "reel_final_2.mp4",
+      "relpath": "reel_final_2.mp4",
+      "status": "NEEDS_REVIEW",
+      "score": 0.4,
+      "reasons": [
+        "filename matches a final-like pattern (+0.35)",
+        "most recently modified file in its version family (+0.2)",
+        "matches an expected deliverable in the project manifest (+0.15)",
+        "is an exact duplicate of another asset (-0.3)"
+      ],
+      "duplicate_of": [
+        "a-c0b6e110d796"
+      ],
+      "version_cluster_id": "cluster_010_reel",
+      "ai_summary": "All members are byte-identical (SHA-256 match); no AI opinion needed.",
+      "ai_mode": "deterministic"
+    },
+    {
+      "asset_id": "a-01904bfd5d28",
+      "filename": "final_layered_export_v1.tif",
+      "relpath": "source/final_layered_export_v1.tif",
+      "status": "LIKELY_SOURCE",
+      "score": 0.25,
+      "reasons": [
+        "filename matches a final-like pattern (+0.35)",
+        "not an exact duplicate of another asset (+0.1)",
+        "filename matches an intermediate/draft-like pattern (-0.2)"
+      ],
+      "duplicate_of": [],
+      "version_cluster_id": null,
+      "ai_summary": null,
+      "ai_mode": null
+    }
+  ]
+}

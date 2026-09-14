@@ -1,0 +1,447 @@
+{
+  "name": "Creative Asset Handoff \u2014 AI Asset Analysis (Sub-workflow)",
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "id": "f0ca5ff1-1868-46a2-b516-1350161aef44",
+      "name": "AI Analysis Input",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -60,
+        300
+      ],
+      "notes": "Receives {cluster_id, members, project_root, ai_mode} from the main workflow's per-item Execute Workflow call."
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Picks one representative raster image (if any) from the cluster's members\n// and assembles the text portion of the vision prompt. Only ONE image is\n// sent per cluster call (not every member) to keep this sub-workflow's node\n// graph static/simple -- see docs/architecture-decision.md and n8n/README.md\n// \"Known simplifications\". The full local/CI Python path (ai_client.py) does\n// send up to 4 images per cluster; this is a deliberate, documented tradeoff\n// for the n8n canvas.\nconst input = $json;\nconst members = input.members || [];\n\nconst rep = members.find(m => m.asset_type === \"image\" && m.extension !== \"svg\" && m.inspection_ok !== false);\n\nconst slim = members.map(m => ({\n  asset_id: m.id, filename: m.filename, relpath: m.relpath, asset_type: m.asset_type,\n  width: m.width, height: m.height, size_bytes: m.size_bytes, modified_at: m.modified_at,\n  is_exact_duplicate_of_another_member: !!(m.exact_duplicate_of && m.exact_duplicate_of.length),\n  visual_similarity_notes: [...(m.visually_similar_to || []), ...(m.visual_duplicate_of || [])],\n}));\n\nconst mediaTypeFor = (ext) => ({\n  jpg: \"image/jpeg\", jpeg: \"image/jpeg\", png: \"image/png\",\n  webp: \"image/webp\", tif: \"image/tiff\", tiff: \"image/tiff\",\n}[ext] || \"image/png\");\n\nconst SYSTEM_PROMPT = \"You are an operational asset-management assistant for a creative agency delivery pipeline. You will be shown a group of files that a deterministic filename-matching step flagged as a possible \\\"version family\\\" (the same creative exported or revised multiple times), plus their technical metadata, and possibly one representative image.\\n\\nYour job is ONLY to reason about:\\n- whether these files likely represent versions of the same creative, a set of duplicates, or unrelated files that happen to share a similar name\\n- which file, if any, looks like the final/delivery-ready version vs. an intermediate/draft/source file\\n- the general creative type (e.g. instagram_post, logo, reel_cover, banner, print_asset, unknown)\\n- a short, neutral visual summary (subject/layout only)\\n- whether any pair of members appears visually different despite the similar filename\\n\\nYou must NOT:\\n- comment on artistic/design quality\\n- claim certainty -- always return a confidence between 0 and 1\\n- invent members not given to you\\n\\nRespond with ONLY a single JSON object, no markdown fences, no prose, matching exactly this shape (all fields required):\\n{\\n  \\\"cluster_id\\\": string,\\n  \\\"relationship\\\": \\\"likely_version_family\\\" | \\\"likely_duplicate_set\\\" | \\\"unrelated_similar\\\" | \\\"unclear\\\",\\n  \\\"confidence\\\": number 0-1,\\n  \\\"creative_type\\\": string,\\n  \\\"visual_summary\\\": string (<=400 chars, neutral, no quality judgement),\\n  \\\"reason\\\": string (<=400 chars),\\n  \\\"recommended_review\\\": boolean,\\n  \\\"members\\\": [\\n    {\\\"asset_id\\\": string, \\\"likely_role\\\": \\\"final\\\"|\\\"intermediate\\\"|\\\"source\\\"|\\\"duplicate\\\"|\\\"unknown\\\",\\n     \\\"role_confidence\\\": number 0-1, \\\"differs_visually\\\": boolean}\\n  ]\\n}\";\n\nreturn [{\n  json: {\n    cluster_id: input.cluster_id,\n    members,\n    project_root: input.project_root,\n    ai_mode: input.ai_mode || \"auto\",\n    representative_relpath: rep ? rep.relpath : null,\n    representative_media_type: rep ? mediaTypeFor(rep.extension) : null,\n    user_payload_text: JSON.stringify({ cluster_id: input.cluster_id, members: slim }, null, 2),\n    system_prompt: SYSTEM_PROMPT,\n    attempt: 1,\n  },\n}];"
+      },
+      "id": "1409158d-d9b3-4f6d-a461-c23b1a578b5d",
+      "name": "Select Representative Image + Build Text Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        180,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "3015dc5d-8503-4821-96ff-fccda5bce87a",
+              "leftValue": "={{ $json.representative_relpath }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ba78986e-b067-4990-ba4d-c3b3fec99096",
+      "name": "Has Representative Image?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        460,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "read",
+        "fileSelector": "={{ $json.project_root }}/{{ $json.representative_relpath }}",
+        "options": {
+          "dataPropertyName": "image_data"
+        }
+      },
+      "id": "2a6c8eb2-528d-4f5a-adb5-0bbc33e6e2e1",
+      "name": "Read Representative Image",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        740,
+        160
+      ],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Attaches the representative image (base64, already loaded by the upstream\n// Read/Write Files From Disk node) to the vision request body.\nconst b64 = $binary.image_data ? $binary.image_data.data : null;\nif (!b64) {\n  // File could not be read (e.g. moved/deleted between stages) -- degrade to text-only rather than fail the cluster.\n  const body = {\n    model: \"claude-sonnet-4-6\", max_tokens: 1024, system: $json.system_prompt,\n    messages: [{ role: \"user\", content: [{ type: \"text\", text: $json.user_payload_text }] }],\n  };\n  return [{ json: { ...$json, request_body: body } }];\n}\nconst body = {\n  model: \"claude-sonnet-4-6\", max_tokens: 1024, system: $json.system_prompt,\n  messages: [{\n    role: \"user\",\n    content: [\n      { type: \"text\", text: $json.user_payload_text },\n      { type: \"image\", source: { type: \"base64\", media_type: $json.representative_media_type, data: b64 } },\n    ],\n  }],\n};\nreturn [{ json: { ...$json, request_body: body } }];"
+      },
+      "id": "d6b5739a-37cc-4c00-8110-3e078da19c01",
+      "name": "Attach Image To Request Body",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1020,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const body = {\n  model: \"claude-sonnet-4-6\", max_tokens: 1024, system: $json.system_prompt,\n  messages: [{ role: \"user\", content: [{ type: \"text\", text: $json.user_payload_text }] }],\n};\nreturn [{ json: { ...$json, request_body: body } }];"
+      },
+      "id": "f9f93da3-d952-4c8b-9833-c449213231b3",
+      "name": "Finalize Text-Only Request Body",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        740,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.request_body }}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "5d7f03ab-3703-4ee4-8d08-3ce2bf1caeef",
+      "name": "Call Vision Model (Anthropic)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1300,
+        300
+      ],
+      "notes": "Requires an HTTP Header Auth credential named 'Anthropic API Key' with header x-api-key. See n8n/README.md.",
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Hand-rolled JSON Schema check -- mirrors python/src/schemas.py\n// AI_CLUSTER_ANALYSIS_SCHEMA exactly. Kept in sync manually; this is the\n// n8n-side half of the \"never trust raw model text\" contract described in\n// docs/architecture-decision.md Section 4.\nconst resp = $json;\nconst upstream = $('Select Representative Image + Build Text Payload').item.json;\nconst attempt = upstream.attempt || 1;\n\nif (resp.error) {\n  return [{ json: { valid: false, error: `HTTP error: ${JSON.stringify(resp.error).slice(0, 300)}`, attempt, cluster_id: upstream.cluster_id } }];\n}\n\nlet parsed;\ntry {\n  const blocks = (resp.content || []).filter(b => b.type === \"text\").map(b => b.text).join(\"\");\n  parsed = JSON.parse(blocks);\n} catch (e) {\n  return [{ json: { valid: false, error: `Could not parse model output as JSON: ${e.message}`, attempt, cluster_id: upstream.cluster_id } }];\n}\n\nfunction isNum01(v) { return typeof v === \"number\" && v >= 0 && v <= 1; }\nconst errors = [];\nconst REQUIRED = [\"cluster_id\", \"relationship\", \"confidence\", \"creative_type\", \"visual_summary\", \"reason\", \"recommended_review\", \"members\"];\nfor (const f of REQUIRED) if (!(f in parsed)) errors.push(`missing field '${f}'`);\nif (parsed.relationship && ![\"likely_version_family\", \"likely_duplicate_set\", \"unrelated_similar\", \"unclear\"].includes(parsed.relationship))\n  errors.push(\"invalid 'relationship' enum value\");\nif (parsed.confidence !== undefined && !isNum01(parsed.confidence)) errors.push(\"'confidence' must be a number between 0 and 1\");\nif (!Array.isArray(parsed.members) || parsed.members.length === 0) errors.push(\"'members' must be a non-empty array\");\nelse for (const m of parsed.members) {\n  if (!m.asset_id) errors.push(\"member missing asset_id\");\n  if (![\"final\", \"intermediate\", \"source\", \"duplicate\", \"unknown\"].includes(m.likely_role)) errors.push(`invalid likely_role '${m.likely_role}'`);\n  if (!isNum01(m.role_confidence)) errors.push(\"member role_confidence must be a number between 0 and 1\");\n  if (typeof m.differs_visually !== \"boolean\") errors.push(\"member differs_visually must be boolean\");\n}\n\nif (errors.length) {\n  return [{ json: { valid: false, error: errors.join(\"; \"), attempt, cluster_id: upstream.cluster_id } }];\n}\n\nparsed.ai_mode = \"live\";\nparsed.ai_error = null;\nreturn [{ json: { valid: true, data: parsed, attempt, cluster_id: parsed.cluster_id } }];"
+      },
+      "id": "d9818b25-9968-4eaf-8d6b-bb90c72c8ebe",
+      "name": "Extract & Validate JSON Schema",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1580,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "b14a873a-d7d9-4833-95b0-5c01813b1421",
+              "leftValue": "={{ $json.valid }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0de73194-0958-4790-a3ef-0631e77fa776",
+      "name": "Schema Valid?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1860,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "return [{ json: $json.data }];"
+      },
+      "id": "f1b0dc7c-9983-4946-9392-659895eca005",
+      "name": "Format Cluster Result (Success)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2140,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "5de6751a-49fd-4cbf-abc9-3fbe9a5157c1",
+              "leftValue": "={{ $json.attempt }}",
+              "rightValue": 2,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "17d3c388-71f1-47f9-a27e-eece27e7e56f",
+      "name": "Retry Attempted Already?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2140,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const orig = $('Select Representative Image + Build Text Payload').item.json;\nreturn [{\n  json: {\n    cluster_id: orig.cluster_id, relationship: \"unclear\", confidence: 0, creative_type: \"unknown\",\n    visual_summary: \"AI analysis failed schema validation after one retry; flagged for manual review.\",\n    reason: $json.error || \"unknown validation error\", recommended_review: true,\n    ai_mode: \"failed\", ai_error: $json.error,\n    members: orig.members.map(m => ({ asset_id: m.id, likely_role: \"unknown\", role_confidence: 0, differs_visually: false })),\n  },\n}];"
+      },
+      "id": "1aa03437-5241-482a-a042-10dd6f331c21",
+      "name": "Mark AI Analysis Failed",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2420,
+        540
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// One retry only (matches python/src/ai_client.py MAX_RETRIES=2 total attempts).\n// The retry is text-only (no re-read of the image) to keep this loop simple --\n// its purpose is fixing JSON-formatting compliance, not re-examining the image.\nconst orig = $('Select Representative Image + Build Text Payload').item.json;\nconst hint = `\\n\\nYour previous response was invalid (${$json.error}). Return ONLY the JSON object, matching the schema exactly, with no markdown fences or extra text.`;\nconst body = {\n  model: \"claude-sonnet-4-6\", max_tokens: 1024, system: orig.system_prompt,\n  messages: [{ role: \"user\", content: [{ type: \"text\", text: orig.user_payload_text + hint }] }],\n};\nreturn [{ json: { ...orig, attempt: 2, request_body: body } }];"
+      },
+      "id": "8663cc2a-db09-4bb1-83b9-502d9f86491f",
+      "name": "Build Retry Request Body",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2140,
+        680
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## AI Asset Analysis (Sub-workflow)\nCalled once per ambiguous version cluster from the main workflow's\n\"AI Asset Analysis \u2014 Per Cluster\" node (Execute Workflow, per-item mode).\n\nNative n8n HTTP Request + hand-rolled JSON Schema validation + one retry.\nNo LangChain / AI Agent node -- see docs/architecture-decision.md \u00a74\nfor why a plain HTTP Request node was chosen over n8n's built-in\nStructured Output Parser.",
+        "height": 260,
+        "width": 560,
+        "color": 6
+      },
+      "id": "5893f988-e470-4008-b605-29525d7b4e02",
+      "name": "Note: ## AI Asset Analysis (Sub-workflow)",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -60,
+        700
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Known simplification: only ONE representative image per cluster is\nsent to the vision model (not every member) to keep this canvas static\nand legible. The retry path is text-only. Both are documented in\nn8n/README.md \u2192 \"Known simplifications\".",
+        "height": 220,
+        "width": 560,
+        "color": 5
+      },
+      "id": "651a8d41-e5b2-4e69-aecb-ce3b1962ed2f",
+      "name": "Note: Known simplification: only ONE represent",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        740,
+        700
+      ]
+    }
+  ],
+  "connections": {
+    "AI Analysis Input": {
+      "main": [
+        [
+          {
+            "node": "Select Representative Image + Build Text Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Select Representative Image + Build Text Payload": {
+      "main": [
+        [
+          {
+            "node": "Has Representative Image?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has Representative Image?": {
+      "main": [
+        [
+          {
+            "node": "Read Representative Image",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Finalize Text-Only Request Body",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Representative Image": {
+      "main": [
+        [
+          {
+            "node": "Attach Image To Request Body",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Attach Image To Request Body": {
+      "main": [
+        [
+          {
+            "node": "Call Vision Model (Anthropic)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Finalize Text-Only Request Body": {
+      "main": [
+        [
+          {
+            "node": "Call Vision Model (Anthropic)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call Vision Model (Anthropic)": {
+      "main": [
+        [
+          {
+            "node": "Extract & Validate JSON Schema",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract & Validate JSON Schema": {
+      "main": [
+        [
+          {
+            "node": "Schema Valid?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schema Valid?": {
+      "main": [
+        [
+          {
+            "node": "Format Cluster Result (Success)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Retry Attempted Already?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Retry Attempted Already?": {
+      "main": [
+        [
+          {
+            "node": "Mark AI Analysis Failed",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Build Retry Request Body",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Retry Request Body": {
+      "main": [
+        [
+          {
+            "node": "Call Vision Model (Anthropic)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "id": "8f3b7a2e-1c4d-4e6a-9b2f-caah5subwf001",
+  "tags": []
+}

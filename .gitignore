@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# Secrets
+.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# n8n local runtime artifacts (not part of the portfolio deliverable)
+.n8n/
+
+# Scratch space some contributors use for local re-runs of the demo
+/tmp_output/

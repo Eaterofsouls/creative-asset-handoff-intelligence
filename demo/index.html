@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Creative Asset Handoff Intelligence — Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F1F1EC; --panel:#FBFBF8; --ink:#12171C; --ink-soft:#4B5560;
+  --line:#C9CCC3; --ok:#1C7F5C; --ok-bg:#DCEEE4; --warn:#B9791A; --warn-bg:#F6E7CB;
+  --bad:#B23A2E; --bad-bg:#F5DAD4; --muted:#767F73; --muted-bg:#E4E4DC;
+  --accent:#C77A2E; --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --display:"Space Grotesk",ui-sans-serif,system-ui,sans-serif;
+  --body:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);line-height:1.6;
+  background-image:linear-gradient(var(--paper) 39px, rgba(0,0,0,0.03) 40px);background-size:100% 40px;}
+.wrap{max-width:1080px;margin:0 auto;padding:56px 32px 96px}
+.eyebrow{font-family:var(--mono);text-transform:uppercase;letter-spacing:.14em;font-size:12px;color:var(--ink-soft)}
+h1{font-family:var(--display);font-weight:700;font-size:42px;letter-spacing:-.01em;margin:8px 0 12px;max-width:16ch}
+.subtitle{font-size:17px;color:var(--ink-soft);max-width:56ch;margin:0 0 28px}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+.btn{font-family:var(--mono);font-size:12.5px;text-transform:uppercase;letter-spacing:.05em;
+  padding:11px 18px;border:1.5px solid var(--ink);border-radius:2px;text-decoration:none;color:var(--ink);
+  background:var(--panel);transition:transform .12s ease}
+.btn:hover{transform:translateY(-1px)}
+.btn.primary{background:var(--ink);color:var(--paper)}
+.tick-rule{height:14px;background-image:repeating-linear-gradient(90deg,var(--ink) 0 1px,transparent 1px 12px);opacity:.3;margin:36px 0}
+section{margin:56px 0}
+h2{font-family:var(--display);font-size:22px;letter-spacing:-.005em;border-bottom:1px solid var(--line);
+  padding-bottom:10px;margin-bottom:22px;display:flex;align-items:baseline;gap:12px}
+h2 .idx{font-family:var(--mono);color:var(--accent);font-size:15px}
+p{color:var(--ink-soft);font-size:15px;max-width:72ch}
+.two-col{display:flex;gap:28px;flex-wrap:wrap}
+.two-col > *{flex:1 1 360px;min-width:0}
+.card{background:var(--panel);border:1px solid var(--line);padding:22px 24px}
+.card h3{font-family:var(--display);font-size:16px;margin:0 0 10px}
+.messy-list{font-family:var(--mono);font-size:13px;background:var(--panel);border:1px solid var(--line);
+  padding:18px 20px;list-style:none;margin:0;color:var(--ink-soft)}
+.messy-list li{padding:3px 0}
+.messy-list li.flag{color:var(--bad)}
+.messy-list li.flag::before{content:"\26a0  ";}
+.stage-flow{display:flex;flex-direction:column;gap:0;border:1px solid var(--line);background:var(--panel)}
+.stage{display:grid;grid-template-columns:52px 200px 1fr;gap:16px;align-items:center;padding:14px 18px;
+  border-bottom:1px solid var(--line)}
+.stage:last-child{border-bottom:none}
+.stage .n{font-family:var(--mono);color:var(--accent);font-size:13px}
+.stage .t{font-family:var(--display);font-weight:700;font-size:14px}
+.stage .d{font-size:13px;color:var(--ink-soft)}
+.tag{display:inline-block;font-family:var(--mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.05em;
+  padding:1px 6px;border-radius:2px;border:1px solid;margin-left:8px;vertical-align:middle}
+.tag.det{color:var(--ok);background:var(--ok-bg);border-color:var(--ok)}
+.tag.ai{color:var(--accent);background:#F3E4D2;border-color:var(--accent)}
+.tag.human{color:var(--warn);background:var(--warn-bg);border-color:var(--warn)}
+.preview img{width:100%;display:block;border:1px solid var(--line)}
+.preview{margin:18px 0}
+.preview .cap{font-family:var(--mono);font-size:11px;color:var(--ink-soft);margin-top:8px}
+.stat-strip{display:flex;flex-wrap:wrap;gap:1px;background:var(--line);border:1px solid var(--line)}
+.stat{background:var(--panel);padding:16px 18px;flex:1 1 140px;min-width:140px}
+.stat .n{font-family:var(--mono);font-size:24px;font-weight:600;display:block}
+.stat .l{font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft)}
+.disclaimer{border-left:3px solid var(--accent);background:var(--panel);padding:14px 18px;font-size:13.5px;color:var(--ink-soft)}
+.footer{margin-top:64px;padding-top:20px;border-top:1px solid var(--line);font-family:var(--mono);
+  font-size:11px;color:var(--ink-soft);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+code{font-family:var(--mono);background:var(--muted-bg);padding:1px 5px;border-radius:2px;font-size:.92em}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">n8n Workflow &middot; Portfolio Demo &middot; Creative Agency Automation</div>
+  <h1>Creative Asset Handoff Intelligence</h1>
+  <p class="subtitle">Turning messy creative project folders into clean, validated, delivery-ready
+  asset packages — deterministic file science, AI reasoning only where it earns its place, and a
+  human who always gets the final word.</p>
+  <div class="cta-row">
+    <a class="btn primary" href="../output/processing_report.html">View Sample Processing Report →</a>
+    <a class="btn" href="../output/delivery_manifest.html">View Sample Delivery Manifest →</a>
+    <a class="btn" href="../n8n/creative-asset-handoff.json">Download n8n Workflow (.json)</a>
+  </div>
+
+  <div class="tick-rule"></div>
+
+  <section>
+    <h2><span class="idx">01</span> The Problem</h2>
+    <div class="two-col">
+      <div>
+        <p>Every finished campaign leaves behind a folder like this one. A human eventually has to
+        sit down and figure out, file by file, which of these is actually the deliverable.</p>
+        <p>This workflow automates the mechanical parts of that cleanup — hashing, dimension checks,
+        duplicate detection, filename-pattern grouping — and keeps the genuinely uncertain calls
+        visible to a person instead of guessing.</p>
+      </div>
+      <ul class="messy-list">
+        <li>final.png</li>
+        <li>final_v2.png</li>
+        <li class="flag">final_FINAL.png</li>
+        <li class="flag">final_final_revised.png &nbsp;(exact duplicate)</li>
+        <li>instagram_post_1080.png</li>
+        <li class="flag">post_1080_final.png &nbsp;(exact duplicate)</li>
+        <li>post_1080_v2.png</li>
+        <li class="flag">promo_square_wrong_size.png &nbsp;(800×800, expected 1080×1080)</li>
+        <li>reel_final.mp4</li>
+        <li>reel_final_2.mp4</li>
+        <li class="flag">reel_v1_draft.mp4 &nbsp;(720×1280, expected 1080×1920)</li>
+        <li>logo.svg / logo_new.svg / logo_latest_final.svg</li>
+        <li>source/campaign_master.psd</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="idx">02</span> How It Works</h2>
+    <p>Nine stages, orchestrated in n8n. <span class="tag det">deterministic</span> steps measure
+    things exactly. <span class="tag ai">ai-assisted</span> steps only run where a rule genuinely
+    can't decide. <span class="tag human">human</span> is the only thing with final authority.</p>
+    <div class="stage-flow">
+      <div class="stage"><span class="n">01</span><span class="t">Input</span>
+        <span class="d">Project folder + optional expected-deliverables manifest.</span></div>
+      <div class="stage"><span class="n">02</span><span class="t">Discovery &amp; Metadata <span class="tag det">deterministic</span></span>
+        <span class="d">Recursive scan, dimensions, duration/codec, SHA-256 + perceptual hash. One bad file never stops the batch.</span></div>
+      <div class="stage"><span class="n">03</span><span class="t">Duplicate &amp; Version Analysis <span class="tag det">deterministic</span></span>
+        <span class="d">Exact hash matches + perceptual-hash near-duplicates + filename-pattern version clustering.</span></div>
+      <div class="stage"><span class="n">04</span><span class="t">AI Cluster Analysis <span class="tag ai">ai-assisted</span></span>
+        <span class="d">Claude Sonnet (vision) reasons about ambiguous version families only — never asked to judge design quality, never trusted without a confidence score.</span></div>
+      <div class="stage"><span class="n">05</span><span class="t">Classification <span class="tag det">deterministic</span></span>
+        <span class="d">Weighted scoring combines filename signals, recency, manifest match, duplicate evidence, and AI confidence into one status per asset.</span></div>
+      <div class="stage"><span class="n">06</span><span class="t">Validation <span class="tag det">deterministic</span></span>
+        <span class="d">Format, dimensions, integrity, and manifest comparison — flags missing and invalid deliverables explicitly.</span></div>
+      <div class="stage"><span class="n">07</span><span class="t">Human Review <span class="tag human">human</span></span>
+        <span class="d">Anything uncertain surfaces in an n8n form: approve, reject, mark final, mark duplicate, exclude, or recategorize.</span></div>
+      <div class="stage"><span class="n">08</span><span class="t">Delivery Builder <span class="tag det">deterministic</span></span>
+        <span class="d">Copy-only packaging into delivery/&lt;category&gt;/. Source files are never deleted or moved.</span></div>
+      <div class="stage"><span class="n">09</span><span class="t">Manifest + Report <span class="tag det">deterministic</span></span>
+        <span class="d">delivery_manifest.(json|html) and processing_report.html, generated from the same asset ledger.</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="idx">03</span> The n8n Canvas</h2>
+    <p>The full workflow, organized into the same nine sections, with sticky notes explaining each
+    one directly on the canvas — a recruiter can follow it without opening a single node.</p>
+    <div class="preview">
+      <img src="../docs/diagrams/workflow.png" alt="n8n workflow diagram">
+      <div class="cap">docs/diagrams/workflow.mmd — rendered</div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="idx">04</span> Sample Run — Maison Living, Autumn Campaign</h2>
+    <p>23 files discovered from a deliberately messy demo project folder. Every number below is
+    pulled directly from the actual generated report in <code>output/</code>.</p>
+    <div class="stat-strip">
+      <div class="stat"><span class="n">23</span><span class="l">Files Discovered</span></div>
+      <div class="stat"><span class="n">8</span><span class="l">Exact Duplicates</span></div>
+      <div class="stat"><span class="n">7</span><span class="l">Visual Duplicates</span></div>
+      <div class="stat"><span class="n">4</span><span class="l">Version Families</span></div>
+      <div class="stat"><span class="n">13</span><span class="l">Flagged for Review</span></div>
+      <div class="stat"><span class="n">6</span><span class="l">Delivered Assets</span></div>
+    </div>
+    <div class="preview">
+      <img src="assets/report_preview.png" alt="Processing report preview">
+      <div class="cap">output/processing_report.html — top section</div>
+    </div>
+    <div class="preview">
+      <img src="assets/manifest_preview.png" alt="Delivery manifest preview">
+      <div class="cap">output/delivery_manifest.html</div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="idx">05</span> What This Is — and Isn't</h2>
+    <div class="disclaimer">
+      This is a production-oriented n8n workflow for automating the operational cleanup and
+      validation that happens after a creative campaign is completed. It is <strong>not</strong> an
+      "AI-powered DAM," it does <strong>not</strong> claim fully autonomous delivery, and it does
+      <strong>not</strong> claim perfect final-file detection. The system explicitly scores its own
+      confidence and routes anything uncertain to a human. The creative professional retains final
+      authority over every delivery decision — see <code>docs/human-review.md</code> and
+      <code>docs/limitations.md</code>.
+    </div>
+  </section>
+
+  <div class="footer">
+    <span>Creative Asset Handoff Intelligence — one of five AI automation workflows for a creative-agency portfolio.</span>
+    <span>See the repository README for full setup instructions.</span>
+  </div>
+
+</div>
+</body>
+</html>
