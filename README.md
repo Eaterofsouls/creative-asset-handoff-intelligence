@@ -242,3 +242,12 @@ one demo project's naming conventions (expect to retune for a real studio),
 and the n8n JSON was validated structurally + JS-syntax-checked +
 cross-tested against the Python reference implementation, but not
 import-tested against a live n8n instance in this build environment.
+
+---
+
+## Author
+
+**Daksh Chauhan**  
+- **Website:** [buildwithdaksh.com](https://buildwithdaksh.com)  
+- **Email:** [me@buildwithdaksh.com](mailto:me@buildwithdaksh.com)
+
